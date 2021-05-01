@@ -14,6 +14,16 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        Parent test;
+        test = FXMLLoader.load(getClass().getResource("ui/test.fxml"));
+        Stage stage = new Stage();
+        stage.setTitle("Test page");
+        stage.setScene(new Scene(test, 800, 600));
+        stage.show();
+        //stage.show();
+        // Hide this current window (if this is what you want)
+        //((Node)(event.getSource())).getScene().getWindow().hide();
     }
 
     public static void main(String[] args) {

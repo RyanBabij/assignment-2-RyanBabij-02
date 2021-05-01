@@ -40,6 +40,10 @@ public class LoginController implements Initializable {
             if (loginModel.isLogin(txtUsername.getText(),txtPassword.getText())){
 
                 isConnected.setText("Logged in successfully");
+
+
+
+
             }else{
                 isConnected.setText("username and password is incorrect");
             }
@@ -47,12 +51,5 @@ public class LoginController implements Initializable {
             e.printStackTrace();
         }
     }
-
-
-
-
-    //11.2.3 big sur
-
-
 
 }
