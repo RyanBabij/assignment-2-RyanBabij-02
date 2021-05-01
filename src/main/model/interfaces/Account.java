@@ -1,4 +1,4 @@
-package main.model.account;
+package main.model.interfaces;
 
 public class Account {
 
@@ -20,6 +20,15 @@ public class Account {
 
 
 
+    }
+
+    boolean validate(String email, String password)
+    {
+        return false;
+    }
+    boolean recover(String answer1, String answer2)
+    {
+        return false;
     }
 
 }
