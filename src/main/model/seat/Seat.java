@@ -12,11 +12,12 @@ public class Seat {
     // return all bookings on this Seat
     Vector <Booking> getAllBookings()
     {
-        return null;
+        return vBooking;
     }
     // clear Bookings vector on this Seat
     boolean clear()
     {
-        return false;
+        vBooking.clear();
+        return true;
     }
 }

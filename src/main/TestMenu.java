@@ -5,7 +5,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class TestMenu {
+import main.model.interfaces.GUI;
+
+public class TestMenu implements GUI {
 
     boolean failState;
 
@@ -34,7 +36,12 @@ public class TestMenu {
 
     }
 
-    void show()
+    public void init()
+    {
+
+    }
+
+    public void show()
     {
         if (failState)
         {
@@ -42,6 +49,11 @@ public class TestMenu {
             return;
         }
         stage.show();
+    }
+
+    public boolean isFailState()
+    {
+        return failState;
     }
 
 }
