@@ -20,7 +20,7 @@ public class LoginModel {
 
     }
 
-    public Boolean isDbConnected(){
+    public boolean isDbConnected(){
         try {
             return !connection.isClosed();
         }
@@ -29,7 +29,7 @@ public class LoginModel {
         }
     }
 
-    public Boolean isLogin(String user, String pass) throws SQLException {
+    public boolean isLogin(String user, String pass) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet=null;
         String query = "select * from employee where username = ? and password= ?";

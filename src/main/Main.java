@@ -15,15 +15,10 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        Parent test;
-        test = FXMLLoader.load(getClass().getResource("ui/test.fxml"));
-        Stage stage = new Stage();
-        stage.setTitle("Test page");
-        stage.setScene(new Scene(test, 800, 600));
-        stage.show();
-        //stage.show();
-        // Hide this current window (if this is what you want)
-        //((Node)(event.getSource())).getScene().getWindow().hide();
+
+        TestMenu tm = new TestMenu(640,480);
+        tm.show();
+
     }
 
     public static void main(String[] args) {
