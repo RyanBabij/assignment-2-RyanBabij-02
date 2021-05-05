@@ -1,6 +1,9 @@
 package main.model;
 
 import main.SQLConnection;
+import main.model.account.Admin;
+import main.model.account.Worker;
+import main.model.interfaces.Account;
 import org.sqlite.SQLiteConnection;
 
 import java.sql.Connection;
@@ -44,17 +47,24 @@ public class LoginModel {
             {
                 boolean isAdmin = resultSet.getBoolean("isAdmin");
 
+                // build the account object
+
                 if (isAdmin)
                 {
+                    Admin admin = new Admin("a","a","a","a","a","a");
+
                     System.out.println("ADMIN");
                 }
                 else
                 {
+                    Worker worker = new Worker("a","a","a","a","a","a");
+
                     System.out.println("Not admin");
                 }
                 return true;
             }
-            else{
+            else
+            {
                 return false;
             }
         }
