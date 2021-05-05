@@ -51,6 +51,9 @@ public class LoginController implements Initializable {
 
                 isConnected.setText("Logged in successfully");
 
+                // init the user menu here
+
+
 
                 TestMenu testMenu = new TestMenu(640,480);
                 testMenu.show();
