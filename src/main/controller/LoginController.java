@@ -5,6 +5,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
+import main.GUIManager;
+import main.TestMenu;
 import main.model.LoginModel;
 
 import java.net.URL;
@@ -20,13 +22,21 @@ public class LoginController implements Initializable {
     @FXML
     private TextField txtPassword;
 
+    // Control over GUI
+    private GUIManager guiManager;
+
+    public void linkGUI(GUIManager guiManager)
+    {
+        this.guiManager = guiManager;
+    }
+
 
     // Check database connection
     @Override
     public void initialize(URL location, ResourceBundle resources){
         if (loginModel.isDbConnected()){
             isConnected.setText("Connected");
-        }else{
+        }else {
             isConnected.setText("Not Connected");
         }
 
@@ -42,6 +52,8 @@ public class LoginController implements Initializable {
                 isConnected.setText("Logged in successfully");
 
 
+                TestMenu testMenu = new TestMenu(640,480);
+                testMenu.show();
 
 
             }else{

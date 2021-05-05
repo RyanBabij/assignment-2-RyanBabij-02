@@ -8,7 +8,8 @@ package main.model.interfaces;
 
 public interface GUI {
 
-    public void init();
-    public void show();
-    public boolean isFailState();
+    public void init(); // prepare the GUI for rendering
+    public void show(); // make the GUI visible
+    public void hide(); // make the GUI invisible
+    public boolean isFailState(); // return true if something went wrong
 }

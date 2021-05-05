@@ -13,7 +13,7 @@ public class TestMenu implements GUI {
 
     Parent test;
     Stage stage = new Stage();
-    TestMenu(int sizeX, int sizeY)
+    public TestMenu(int sizeX, int sizeY)
     {
         failState=false;
         try
@@ -49,6 +49,11 @@ public class TestMenu implements GUI {
             return;
         }
         stage.show();
+    }
+
+    public void hide()
+    {
+        stage.hide();
     }
 
     public boolean isFailState()
