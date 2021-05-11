@@ -32,34 +32,13 @@ public class AdminController
     public void initialize()
     {
         welcomeText.setText("AAA");
-
-        // This seems to be a way to safely update GUI elements without causing exceptions from
-        // trying to change things prior to JavaFX initializing them.
-        /*
-        Platform.runLater(new Runnable() {
-            @Override public void run() {
-                welcomeText.setText("AAA2");
-
-                ++updateCounter;
-                welcomeText.setText(Integer.toString(updateCounter));
-
-                try {
-                    sleep(100);
-                }
-                catch (Exception e)
-                {
-                    System.out.println("sleep exception");
-                }
-            }
-        });
-         */
-
-        initInputThread();
+        initBackgroundThread();
     }
 
-    private void initInputThread() {
-
-        //Scanner input = new Scanner(System.in);
+    // This thread runs periodically in the background to update the GUI if necessary.
+    private void initBackgroundThread()
+    {
+        // Define the thread
 
         Task<Void> task = new Task<Void>() {
             @Override
@@ -85,6 +64,7 @@ public class AdminController
             }
         };
 
+        // Start the thread
         Thread th = new Thread(task);
         th.setDaemon(true);
         th.start();
