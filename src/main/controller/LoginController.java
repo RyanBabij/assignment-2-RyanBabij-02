@@ -22,15 +22,6 @@ public class LoginController implements Initializable {
     @FXML
     private TextField txtPassword;
 
-    // Control over GUI
-    private GUIManager guiManager;
-
-    public void linkGUI(GUIManager guiManager)
-    {
-        this.guiManager = guiManager;
-    }
-
-
     // Check database connection
     @Override
     public void initialize(URL location, ResourceBundle resources){
@@ -54,10 +45,14 @@ public class LoginController implements Initializable {
                 // init the user menu here
 
 
+                AdminController adminController = new AdminController();
+                //adminController.wText="AAAAAAAAA";
 
                 TestMenu testMenu = new TestMenu(640,480);
                 testMenu.show();
 
+
+                adminController.setText("SSSSS");
 
             }else{
                 isConnected.setText("username and password is incorrect");

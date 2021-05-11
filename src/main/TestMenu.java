@@ -19,7 +19,7 @@ public class TestMenu implements GUI {
         try
         {
             //Parent test;
-            test = FXMLLoader.load(getClass().getResource("ui/test.fxml"));
+            test = FXMLLoader.load(getClass().getResource("ui/testlabel.fxml"));
             //Stage stage = new Stage();
             stage.setTitle("Test page");
             stage.setScene(new Scene(test, sizeX, sizeY));
