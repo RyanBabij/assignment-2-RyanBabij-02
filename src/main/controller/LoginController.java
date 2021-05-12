@@ -5,8 +5,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
+import main.WorkerMainMenu;
 import main.model.LoginModel;
-import main.TestMenu;
+import main.AdminMainMenu;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -42,8 +43,11 @@ public class LoginController implements Initializable {
                 isConnected.setText("Logged in successfully");
 
                 // There's no need to create the AdminController, JavaFX will create it.
-                TestMenu testMenu = new TestMenu(640,480);
-                testMenu.show();
+                AdminMainMenu adminMainMenu = new AdminMainMenu(640,480);
+                adminMainMenu.show();
+
+                WorkerMainMenu workerMainMenu = new WorkerMainMenu(640,480);
+                workerMainMenu.show();
 
             }else{
                 isConnected.setText("Invalid credentials");

@@ -23,7 +23,7 @@ import main.model.interfaces.GUI;
 
 import static java.lang.Thread.sleep;
 
-public class TestMenu implements GUI {
+public class WorkerMainMenu implements GUI {
 
     boolean failState;
 
@@ -35,7 +35,7 @@ public class TestMenu implements GUI {
 
     private int updateCounter;
 
-    public TestMenu(int sizeX, int sizeY)
+    public WorkerMainMenu(int sizeX, int sizeY)
     {
         updateCounter = 0;
 
@@ -43,9 +43,9 @@ public class TestMenu implements GUI {
         try
         {
             //Parent test;
-            test = FXMLLoader.load(getClass().getResource("ui/AdminMain.fxml"));
+            test = FXMLLoader.load(getClass().getResource("ui/WorkerMain.fxml"));
             //Stage stage = new Stage();
-            stage.setTitle("Test page");
+            stage.setTitle("Worker main menu");
             stage.setScene(new Scene(test, sizeX, sizeY));
             //stage.show();
             //stage.show();

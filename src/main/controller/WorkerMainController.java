@@ -5,9 +5,9 @@ import javafx.fxml.FXML;
 
 import static java.lang.Thread.sleep;
 
-public class AdminMainController
+public class WorkerMainController
 {
-    public AdminMainController()
+    public WorkerMainController()
     {
     }
 
