@@ -2,6 +2,7 @@ package main.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
@@ -43,15 +44,25 @@ public class LoginController implements Initializable {
 
                 isConnected.setText("Logged in successfully");
 
-                // There's no need to create the AdminController, JavaFX will create it.
-                MenuAdminMain menuAdminMain = new MenuAdminMain(640,480);
-                menuAdminMain.show();
+                // hide this window.
+                ((Node)(event.getSource())).getScene().getWindow().hide();
 
-                MenuWorkerMain menuWorkerMain = new MenuWorkerMain(640,480);
-                menuWorkerMain.show();
+                if(loginModel.isAdmin)
+                {
+                    // open admin menu
+                    // There's no need to create the AdminController, JavaFX will create it.
+                    MenuAdminMain menuAdminMain = new MenuAdminMain(640,480);
+                    menuAdminMain.show();
 
-                MenuAdminReport menuAdminReport = new MenuAdminReport(640,480);
-                menuAdminReport.show();
+                    MenuAdminReport menuAdminReport = new MenuAdminReport(640,480);
+                    menuAdminReport.show();
+                }
+                else
+                {
+                    // open worker menu
+                    MenuWorkerMain menuWorkerMain = new MenuWorkerMain(640,480);
+                    menuWorkerMain.show();
+                }
 
             }else{
                 isConnected.setText("Invalid credentials");

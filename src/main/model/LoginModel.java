@@ -15,6 +15,8 @@ public class LoginModel {
 
     Connection connection;
 
+    public boolean isAdmin;
+
     public LoginModel(){
 
         connection = SQLConnection.connect();
@@ -54,12 +56,14 @@ public class LoginModel {
                     Admin admin = new Admin("a","a","a","a","a","a");
 
                     System.out.println("ADMIN");
+                    this.isAdmin=true;
                 }
                 else
                 {
                     Worker worker = new Worker("a","a","a","a","a","a");
 
                     System.out.println("Not admin");
+                    this.isAdmin=false;
                 }
                 return true;
             }
