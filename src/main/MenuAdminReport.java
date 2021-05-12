@@ -31,7 +31,7 @@ public class MenuAdminReport implements GUI {
         failState=false;
         try
         {
-            test = FXMLLoader.load(getClass().getResource("ui/AdminReport.fxml"));
+            test = FXMLLoader.load(getClass().getResource("ui/MenuAdminReport.fxml"));
             stage.setTitle("Admin report");
             stage.setScene(new Scene(test, sizeX, sizeY));
         }
