@@ -15,8 +15,6 @@ import static java.lang.Thread.sleep;
 
 public class AdminController
 {
-
-
     //public LoginModel loginModel = new LoginModel();
     @FXML
     private Label welcomeText;
@@ -36,8 +34,7 @@ public class AdminController
     }
 
     // This thread runs periodically in the background to update the GUI if necessary.
-    private void initBackgroundThread()
-    {
+    private void initBackgroundThread() {
         // Define the thread
 
         Task<Void> task = new Task<Void>() {
@@ -55,9 +52,7 @@ public class AdminController
                     });
                     try {
                         sleep(1000);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         System.out.println("sleep exception");
                     }
                 }
@@ -68,12 +63,6 @@ public class AdminController
         Thread th = new Thread(task);
         th.setDaemon(true);
         th.start();
-    }
-
-    @FXML
-    public void setText(String str)
-    {
-        //welcomeText.setText(str);
     }
 
 }

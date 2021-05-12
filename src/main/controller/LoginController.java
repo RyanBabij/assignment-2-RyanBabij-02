@@ -5,9 +5,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
-import main.GUIManager;
-import main.TestMenu;
 import main.model.LoginModel;
+import main.TestMenu;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -42,20 +41,12 @@ public class LoginController implements Initializable {
 
                 isConnected.setText("Logged in successfully");
 
-                // init the user menu here
-
-
-                AdminController adminController = new AdminController();
-                //adminController.wText="AAAAAAAAA";
-
+                // There's no need to create the AdminController, JavaFX will create it.
                 TestMenu testMenu = new TestMenu(640,480);
                 testMenu.show();
 
-
-                adminController.setText("SSSSS");
-
             }else{
-                isConnected.setText("username and password is incorrect");
+                isConnected.setText("Invalid credentials");
             }
         } catch (SQLException e) {
             e.printStackTrace();
