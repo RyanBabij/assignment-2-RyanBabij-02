@@ -4,26 +4,15 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import main.model.LoginModel;
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import static java.lang.Thread.sleep;
-
 import main.model.interfaces.GUI;
 
 import static java.lang.Thread.sleep;
 
-public class WorkerMainMenu implements GUI {
+public class MenuAdminReport implements GUI {
 
     boolean failState;
 
@@ -35,22 +24,16 @@ public class WorkerMainMenu implements GUI {
 
     private int updateCounter;
 
-    public WorkerMainMenu(int sizeX, int sizeY)
+    public MenuAdminReport(int sizeX, int sizeY)
     {
         updateCounter = 0;
 
         failState=false;
         try
         {
-            //Parent test;
-            test = FXMLLoader.load(getClass().getResource("ui/WorkerMain.fxml"));
-            //Stage stage = new Stage();
-            stage.setTitle("Worker main menu");
+            test = FXMLLoader.load(getClass().getResource("ui/AdminReport.fxml"));
+            stage.setTitle("Admin report");
             stage.setScene(new Scene(test, sizeX, sizeY));
-            //stage.show();
-            //stage.show();
-            // Hide this current window (if this is what you want)
-            //((Node)(event.getSource())).getScene().getWindow().hide();
         }
         catch (Exception e)
         {
