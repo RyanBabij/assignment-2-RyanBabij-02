@@ -4,11 +4,23 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.Main;
 
 public class RecoverController
 {
+    @FXML
+    private TextField fxUsername;
+    @FXML
+    private TextField fxAnswer1;
+    @FXML
+    private TextField fxAnswer2;
+    @FXML
+    private Label fxFeedback;
+
     public RecoverController()
     {
     }
@@ -22,9 +34,14 @@ public class RecoverController
      */
     public void Recover(ActionEvent event){
 
-        System.out.println("Recover");
+        System.out.println("Recovering:");
+
+        System.out.println(fxUsername.getText());
+        System.out.println(fxAnswer1.getText());
+        System.out.println(fxAnswer2.getText());
 
         // go back to login menu
+        fxFeedback.setText("Recovery successful. Go back and login");
 
     }
 
