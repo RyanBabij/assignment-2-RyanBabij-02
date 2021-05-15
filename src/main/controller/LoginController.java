@@ -76,6 +76,9 @@ public class LoginController implements Initializable {
     */
     public void Register(ActionEvent event)
     {
+        // hide this window.
+        ((Node)(event.getSource())).getScene().getWindow().hide();
+
         System.out.println("Register");
 
         // open worker menu
@@ -88,6 +91,9 @@ public class LoginController implements Initializable {
     */
     public void Recover(ActionEvent event)
     {
+        // hide this window.
+        ((Node)(event.getSource())).getScene().getWindow().hide();
+
         System.out.println("Recover");
 
         // open worker menu

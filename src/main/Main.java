@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    public static Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         //Parent root = FXMLLoader.load(getClass().getResource("ui/OldLogin.fxml"));
@@ -15,6 +17,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Login");
+        this.primaryStage = primaryStage;
         primaryStage.show();
 
 
