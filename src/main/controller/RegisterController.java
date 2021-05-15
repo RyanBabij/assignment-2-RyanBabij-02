@@ -6,11 +6,29 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.Main;
 
 public class RegisterController
 {
+    @FXML
+    private TextField fxUsername;
+    @FXML
+    private PasswordField fxPassword;
+    @FXML
+    private TextField fxQuestion1;
+    @FXML
+    private TextField fxAnswer1;
+    @FXML
+    private TextField fxQuestion2;
+    @FXML
+    private TextField fxAnswer2;
+    @FXML
+    private Label fxFeedback;
+
     public RegisterController()
     {
     }
@@ -24,9 +42,19 @@ public class RegisterController
      */
     public void Register(ActionEvent event){
 
-        System.out.println("Register");
+        System.out.println("Registering:");
+        System.out.println(fxUsername.getText());
+        System.out.println(fxPassword.getText());
+
+        System.out.println(fxQuestion1.getText());
+        System.out.println(fxAnswer1.getText());
+        System.out.println(fxQuestion2.getText());
+        System.out.println(fxAnswer2.getText());
+
+        // if registration is success. Print feedback.
 
         // go back to login menu
+        fxFeedback.setText("Registration successful. Go back and login");
 
     }
 
