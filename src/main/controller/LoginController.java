@@ -6,10 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
-import main.MenuAdminReport;
-import main.MenuWorkerMain;
+import main.*;
 import main.model.LoginModel;
-import main.MenuAdminMain;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -72,4 +70,28 @@ public class LoginController implements Initializable {
         }
     }
 
+
+    /* Register Action method
+   redirect to register menu
+    */
+    public void Register(ActionEvent event)
+    {
+        System.out.println("Register");
+
+        // open worker menu
+        MenuAccountRegister menuRegister = new MenuAccountRegister(640,480);
+        menuRegister.show();
+    }
+
+    /* Register Action method
+   redirect to register menu
+    */
+    public void Recover(ActionEvent event)
+    {
+        System.out.println("Recover");
+
+        // open worker menu
+        MenuAccountRecover menuRecover = new MenuAccountRecover(640,480);
+        menuRecover.show();
+    }
 }
