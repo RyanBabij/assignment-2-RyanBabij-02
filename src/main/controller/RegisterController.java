@@ -17,10 +17,7 @@ import main.model.account.Admin;
 import main.model.account.Worker;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable
@@ -92,7 +89,9 @@ public class RegisterController implements Initializable
             }
             else
             {
-                fxFeedback.setText("MAKE ACK");
+                //fxFeedback.setText("MAKE ACK");
+                pushAccount(username,password);
+                fxFeedback.setText("Ack should exist now");
             }
         }
 
@@ -157,6 +156,22 @@ public class RegisterController implements Initializable
             resultSet.close();
         }
 
+    }
+
+    public boolean pushAccount(String username, String password) throws SQLException {
+
+        PreparedStatement preparedStatement = null;
+        String query = "insert into user (email, password, question1, answer1, question2, answer2, isAdmin)"
+                +" VALUES(?,?,'a','a','a','a',false)";
+
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, username);
+        preparedStatement.setString(2, password);
+
+        //Statement statement = connection.createStatement();
+        int insertCount = preparedStatement.executeUpdate();
+
+        return true;
     }
 
     public void Back(ActionEvent event)
