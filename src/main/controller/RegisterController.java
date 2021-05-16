@@ -13,9 +13,14 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.Main;
 import main.SQLConnection;
+import main.model.account.Admin;
+import main.model.account.Worker;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable
@@ -67,9 +72,30 @@ public class RegisterController implements Initializable
     /* Admin Report method
     Build and display admin report
      */
-    public void Register(ActionEvent event){
+    public void Register(ActionEvent event) throws SQLException {
 
         System.out.println("Registering:");
+
+        String username = fxUsername.getText();
+        String password = fxPassword.getText();
+
+        if (username.isEmpty() || password.isEmpty())
+        {
+            fxFeedback.setText("no empty");
+        }
+        else {
+            fxFeedback.setText("Make acc obj");
+            // write account to db
+            if (isRegister(username, password))
+            {
+                fxFeedback.setText("ALREADY EXISTS");
+            }
+            else
+            {
+                fxFeedback.setText("MAKE ACK");
+            }
+        }
+
         System.out.println(fxUsername.getText());
         System.out.println(fxPassword.getText());
 
@@ -81,7 +107,55 @@ public class RegisterController implements Initializable
         // if registration is success. Print feedback.
 
         // go back to login menu
-        fxFeedback.setText("Registration successful. Go back and login");
+        //fxFeedback.setText("Registration successful. Go back and login");
+
+    }
+
+    public boolean isRegister(String user, String pass) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet=null;
+        String query = "select * from user where email = ? and password= ?";
+        try {
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, user);
+            preparedStatement.setString(2, pass);
+
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) // if there's a hit
+            {
+                boolean isAdmin = resultSet.getBoolean("isAdmin");
+
+                // build the account object
+
+                if (isAdmin)
+                {
+                    Admin admin = new Admin("a","a","a","a","a","a");
+
+                    System.out.println("ADMIN");
+                    //this.isAdmin=true;
+                }
+                else
+                {
+                    Worker worker = new Worker("a","a","a","a","a","a");
+
+                    System.out.println("Not admin");
+                    //this.isAdmin=false;
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            return false;
+        }finally {
+            preparedStatement.close();
+            resultSet.close();
+        }
 
     }
 
