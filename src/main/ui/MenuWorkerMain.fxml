@@ -16,7 +16,7 @@
             <Button layoutX="574.0" layoutY="336.0" mnemonicParsing="false" text="Logout" onAction="#Logout" />
             <Button layoutX="363.0" layoutY="336.0" mnemonicParsing="false" text="Make a booking" onAction="#Booking" />
             <Button layoutX="467.0" layoutY="336.0" mnemonicParsing="false" text="Manage account" onAction="#ManageAccount" />
-            <ListView layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="374.0" />
+            <ListView fx:id="fxBookingList" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="374.0" />
          </children>
     </AnchorPane>
   </children>

@@ -3,28 +3,26 @@ package main.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ListView;
 import main.Main;
 
 import static java.lang.Thread.sleep;
 
 public class WorkerMainController
 {
+
+    @FXML
+    private ListView fxBookingList;
+
     public WorkerMainController()
     {
+        //fxBookingList.getItems().add("AAAAA");
     }
 
     @FXML
     public void initialize()
     {
-    }
-    /* Admin Report method
-    Build and display admin report
-     */
-    public void Report(ActionEvent event){
-
-        System.out.println("REPORT");
-
-        // Build and show report menu
+        fxBookingList.getItems().add("BBBB");
     }
 
     // Logout worker and return to login screen
@@ -39,6 +37,7 @@ public class WorkerMainController
     public void Booking(ActionEvent event)
     {
         System.out.println("BOOKING");
+        fxBookingList.getItems().add("CCC");
     }
 
     public void ManageAccount(ActionEvent event)

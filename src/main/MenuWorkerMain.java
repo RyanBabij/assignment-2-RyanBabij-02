@@ -4,26 +4,29 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import static java.lang.Thread.sleep;
 
 import main.model.interfaces.GUI;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import static java.lang.Thread.sleep;
 
-public class MenuWorkerMain implements GUI {
+public class MenuWorkerMain
+{
 
     boolean failState;
 
     Parent test;
     Stage stage = new Stage();
-
-    @FXML
-    private Label welcomeText;
 
     private int updateCounter;
 
@@ -52,17 +55,6 @@ public class MenuWorkerMain implements GUI {
 
     }
 
-    @FXML
-    public void initialize()
-    {
-        welcomeText.setText("AAA");
-        initBackgroundThread();
-    }
-
-    public void init()
-    {
-    }
-
     // This thread runs periodically in the background to update the GUI if necessary.
     private void initBackgroundThread()
     {
@@ -78,11 +70,12 @@ public class MenuWorkerMain implements GUI {
                         @Override
                         public void run() {
                             ++updateCounter;
-                            welcomeText.setText(Integer.toString(updateCounter));
+                            //welcomeText.setText(Integer.toString(updateCounter));
                         }
                     });
                     try {
                         sleep(1000);
+                        //fxBookingList.getItems().add("VVV");
                     }
                     catch (Exception e)
                     {
