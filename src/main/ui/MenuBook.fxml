@@ -11,14 +11,16 @@
   <children>
     <AnchorPane maxHeight="350.0" maxWidth="350.0" minHeight="214.0" minWidth="350.0" prefHeight="214.0" prefWidth="350.0" VBox.vgrow="ALWAYS">
          <children>
-            <DatePicker layoutX="100.0" layoutY="40.0" />
+            <DatePicker fx:id="fxDate" layoutX="100.0" layoutY="40.0" />
             <Label layoutX="14.0" layoutY="44.0" text="Date" />
             <Label layoutX="14.0" layoutY="76.0" text="Time" />
             <Label layoutX="14.0" layoutY="109.0" text="Duration" />
-            <ChoiceBox layoutX="99.0" layoutY="72.0" prefWidth="150.0" />
-            <ChoiceBox layoutX="99.0" layoutY="105.0" prefWidth="150.0" />
-            <Button layoutX="100.0" layoutY="144.0" mnemonicParsing="false" text="Book" onAction="#MakeBooking"/>
-            <Button layoutX="154.0" layoutY="144.0" mnemonicParsing="false" text="Back" onAction="#Back"/>
+            <ChoiceBox fx:id="fxChoiceTime" layoutX="99.0" layoutY="72.0" prefWidth="150.0" />
+            <ChoiceBox fx:id="fxChoiceDuration" layoutX="99.0" layoutY="105.0" prefWidth="150.0" />
+            <Button layoutX="100.0" layoutY="171.0" mnemonicParsing="false" onAction="#MakeBooking" prefHeight="17.0" prefWidth="43.0" text="Book" />
+            <Button layoutX="155.0" layoutY="171.0" mnemonicParsing="false" onAction="#Back" text="Back" />
+            <Label layoutX="15.0" layoutY="144.0" text="Seat" />
+            <ChoiceBox fx:id="fxChoiceSeat" layoutX="99.0" layoutY="140.0" prefWidth="150.0" />
          </children>
     </AnchorPane>
   </children>
