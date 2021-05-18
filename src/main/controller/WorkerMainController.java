@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import main.Main;
+import main.MenuWorkerBook;
 
 import static java.lang.Thread.sleep;
 
@@ -38,6 +39,10 @@ public class WorkerMainController
     {
         System.out.println("BOOKING");
         fxBookingList.getItems().add("CCC");
+
+        MenuWorkerBook menuWorkerBook = new MenuWorkerBook(640,480);
+        menuWorkerBook.show();
+        ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 
     public void ManageAccount(ActionEvent event)
