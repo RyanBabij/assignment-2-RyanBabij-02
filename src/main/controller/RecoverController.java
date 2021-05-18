@@ -2,6 +2,7 @@ package main.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -9,8 +10,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.Main;
+import main.SQLConnection;
 
-public class RecoverController
+import java.net.URL;
+import java.sql.Connection;
+import java.util.ResourceBundle;
+
+public class RecoverController implements Initializable
 {
     @FXML
     private TextField fxUsername;
@@ -21,8 +27,33 @@ public class RecoverController
     @FXML
     private Label fxFeedback;
 
+    Connection connection;
+
     public RecoverController()
     {
+        connection = SQLConnection.connect();
+        if (connection == null)
+            System.exit(1);
+    }
+
+    // Check database connection
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        if (isDbConnected()){
+            fxFeedback.setText("Connected");
+        }else {
+            fxFeedback.setText("Not Connected");
+        }
+
+    }
+
+    public boolean isDbConnected(){
+        try {
+            return !connection.isClosed();
+        }
+        catch(Exception e){
+            return false;
+        }
     }
 
     @FXML
