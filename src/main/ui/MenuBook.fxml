@@ -21,6 +21,7 @@
             <Button layoutX="155.0" layoutY="171.0" mnemonicParsing="false" onAction="#Back" text="Back" />
             <Label layoutX="15.0" layoutY="144.0" text="Seat" />
             <ChoiceBox fx:id="fxChoiceSeat" layoutX="99.0" layoutY="140.0" prefWidth="150.0" />
+             <Label fx:id="fxFeedback" layoutX="26.0" layoutY="219.0" text="Feedback" />
          </children>
     </AnchorPane>
   </children>

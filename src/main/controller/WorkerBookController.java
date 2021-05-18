@@ -5,9 +5,13 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import main.Main;
 import main.MenuWorkerMain;
+import main.SQLConnection;
+
+import java.sql.Connection;
 import java.time.LocalDateTime;
 
 // We need:
@@ -34,14 +38,36 @@ public class WorkerBookController
     private ChoiceBox fxChoiceSeat;
     @FXML
     private DatePicker fxDate;
+    @FXML
+    private Label fxFeedback;
+
+    Connection connection;
 
     public WorkerBookController()
     {
+        connection = SQLConnection.connect();
+        if (connection == null)
+            System.exit(1);
+    }
+
+    public boolean isDbConnected(){
+        try {
+            return !connection.isClosed();
+        }
+        catch(Exception e){
+            return false;
+        }
     }
 
     @FXML
     public void initialize()
     {
+        if (isDbConnected()){
+            fxFeedback.setText("Connected");
+        }else {
+            fxFeedback.setText("Not Connected");
+        }
+
         fxChoiceTime.getItems().add("None");
         fxChoiceDuration.getItems().add("None");
         fxChoiceDuration.getItems().add("Choice 2");
@@ -72,7 +98,11 @@ public class WorkerBookController
     // Push the booking into the db
     public void MakeBooking(ActionEvent event)
     {
-        System.out.println("MAKE BOOKING");
+        System.out.println("MAKE BOOKING:");
+        System.out.println(fxDate.getValue());
+        System.out.println(fxChoiceTime.getValue());
+        System.out.println(fxChoiceDuration.getValue());
+        System.out.println(fxChoiceSeat.getValue());
     }
 
 }
