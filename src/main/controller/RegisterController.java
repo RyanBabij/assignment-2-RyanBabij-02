@@ -75,6 +75,10 @@ public class RegisterController implements Initializable
 
         String username = fxUsername.getText();
         String password = fxPassword.getText();
+        String question1 = fxQuestion1.getText();
+        String question2 = fxQuestion2.getText();
+        String answer1 = fxAnswer1.getText();
+        String answer2 = fxAnswer2.getText();
 
         if (username.isEmpty() || password.isEmpty())
         {
@@ -90,7 +94,7 @@ public class RegisterController implements Initializable
             else
             {
                 //fxFeedback.setText("MAKE ACK");
-                pushAccount(username,password);
+                pushAccount(username,password, question1, answer1, question2, answer2);
                 fxFeedback.setText("Ack should exist now");
             }
         }
@@ -158,15 +162,20 @@ public class RegisterController implements Initializable
 
     }
 
-    public boolean pushAccount(String username, String password) throws SQLException {
+    public boolean pushAccount(String username, String password, String question1, String answer1,
+                               String question2, String answer2) throws SQLException {
 
         PreparedStatement preparedStatement = null;
         String query = "insert into user (email, password, question1, answer1, question2, answer2, isAdmin)"
-                +" VALUES(?,?,'a','a','a','a',false)";
+                +" VALUES(?,?,?,?,?,?,false)";
 
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, username);
         preparedStatement.setString(2, password);
+        preparedStatement.setString(3, question1);
+        preparedStatement.setString(4, answer1);
+        preparedStatement.setString(5, question2);
+        preparedStatement.setString(6, answer2);
 
         //Statement statement = connection.createStatement();
         int insertCount = preparedStatement.executeUpdate();
