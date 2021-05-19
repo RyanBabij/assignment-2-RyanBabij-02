@@ -49,6 +49,11 @@ public class WorkerBookController
 
     Connection connection;
 
+    @FXML
+    private ListView<String> myListView;
+
+
+
     public WorkerBookController()
     {
         connection = SQLConnection.connect();
@@ -75,19 +80,44 @@ public class WorkerBookController
         }
 
         fxChoiceTime.getItems().add("None");
+        fxChoiceTime.getItems().add("0900");
+        fxChoiceTime.getItems().add("1000");
+        fxChoiceTime.getItems().add("1100");
+        fxChoiceTime.getItems().add("1200");
+        fxChoiceTime.getItems().add("1300");
+        fxChoiceTime.getItems().add("1400");
+        fxChoiceTime.getItems().add("1500");
+        fxChoiceTime.getItems().add("1600");
+
+        // maximum booking duration is 8 hours.
+        // booking cannot extend beyond 5pm closing time,
+        // so a booking at 4pm can only be 1 hour for example.
         fxChoiceDuration.getItems().add("None");
-        fxChoiceDuration.getItems().add("Choice 2");
-        fxChoiceDuration.getItems().add("Choice 3");
+        fxChoiceDuration.getItems().add("1");
+        fxChoiceDuration.getItems().add("2");
+        fxChoiceDuration.getItems().add("3");
+        fxChoiceDuration.getItems().add("4");
+        fxChoiceDuration.getItems().add("5");
+        fxChoiceDuration.getItems().add("6");
+        fxChoiceDuration.getItems().add("7");
+        fxChoiceDuration.getItems().add("8");
+
+        // 7x7
+        // to encourage moving around, seats will be listed in order descending by least frequently used.
         fxChoiceSeat.getItems().add("None");
         fxChoiceSeat.getItems().add("1A");
         fxChoiceSeat.getItems().add("1B");
         fxChoiceSeat.getItems().add("1C");
+        fxChoiceSeat.getItems().add("1D");
+        fxChoiceSeat.getItems().add("1E");
+        fxChoiceSeat.getItems().add("1F");
 
         // set default values
         fxChoiceTime.setValue("None");
         fxChoiceDuration.setValue("None");
         fxChoiceSeat.setValue("None");
         fxDate.setValue(LocalDate.now()  );
+
     }
 
     // Logout worker and return to login screen
@@ -128,28 +158,13 @@ public class WorkerBookController
             pushBooking(date,strTime,strDuration,strSeat);
 
         }
+    }
 
-/*
-        if (username.isEmpty() || password.isEmpty())
-        {
-            fxFeedback.setText("no empty");
-        }
-        else {
-            fxFeedback.setText("Make acc obj");
-            // write account to db
-            if (isRegister(username, password))
-            {
-                fxFeedback.setText("ALREADY EXISTS");
-            }
-            else
-            {
-                //fxFeedback.setText("MAKE ACK");
-                pushAccount(username,password);
-                fxFeedback.setText("Ack should exist now");
-            }
-        } */
-
-
+    // update controls based on what booking configurations are valid with
+    // the current selection
+    public void Update()
+    {
+        System.out.println("Update constraints");
     }
 
     public boolean isValidBooking()
