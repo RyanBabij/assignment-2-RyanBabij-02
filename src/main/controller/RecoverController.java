@@ -11,9 +11,14 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.Main;
 import main.SQLConnection;
+import main.model.account.Admin;
+import main.model.account.Worker;
+import main.model.interfaces.Account;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 public class RecoverController implements Initializable
@@ -26,6 +31,10 @@ public class RecoverController implements Initializable
     private TextField fxAnswer2;
     @FXML
     private Label fxFeedback;
+    @FXML
+    private Label fxQuestion1;
+    @FXML
+    private Label fxQuestion2;
 
     Connection connection;
 
@@ -74,6 +83,78 @@ public class RecoverController implements Initializable
         // go back to login menu
         fxFeedback.setText("Recovery successful. Go back and login");
 
+    }
+
+    public void GetQuestions (ActionEvent event)
+    {
+
+        System.out.println("Retrieve questions from db");
+
+        String username = fxUsername.getText();
+
+        if (username.isEmpty())
+        {
+            fxFeedback.setText("Please enter the username you wish to recover.");
+        }
+        else
+        {
+            Account account = getAccountByUsername(username);
+            fxFeedback.setText("Retrieve questions or account not found.");
+        }
+
+        //System.out.println(fxUsername.getText());
+        //System.out.println(fxAnswer1.getText());
+        //System.out.println(fxAnswer2.getText());
+
+        // go back to login menu
+        //fxFeedback.setText("Recovery successful. Go back and login");
+
+        //return null;
+
+    }
+
+    public Account getAccountByUsername(String username)
+    {
+        // search db by username here.
+
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet=null;
+        String query = "select * from user where email = ?";
+        try {
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username);
+
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) // if there's a hit
+            {
+                String question1 = resultSet.getString("question1");
+                String question2 = resultSet.getString("question2");
+
+                fxQuestion1.setText(question1);
+                fxQuestion2.setText(question2);
+
+                Admin account = new Admin (username,"A","A","A","A", "A");
+
+
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
+        finally
+        {
+            //preparedStatement.close();
+            //resultSet.close();
+        }
+
+        return null;
     }
 
     public void Back(ActionEvent event)
