@@ -45,7 +45,16 @@ public class Admin implements Account {
     }
     public boolean recover(String answer1, String answer2)
     {
-        return true;
+        if (answer1.equals(this.answer1) && answer2.equals(this.answer2))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public String getEmail()
+    {
+        return email;
     }
 
     String getReport()

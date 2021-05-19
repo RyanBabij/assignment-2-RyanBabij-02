@@ -19,6 +19,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class RecoverController implements Initializable
@@ -35,8 +36,12 @@ public class RecoverController implements Initializable
     private Label fxQuestion1;
     @FXML
     private Label fxQuestion2;
+    @FXML
+    private TextField fxNewPassword;
 
     Connection connection;
+
+    Admin accountRecover = null;
 
     public RecoverController()
     {
@@ -72,9 +77,29 @@ public class RecoverController implements Initializable
     /* Admin Report method
     Build and display admin report
      */
-    public void Recover(ActionEvent event){
+    public void Recover(ActionEvent event) throws SQLException {
+        if (accountRecover==null)
+        {
+            System.out.println("Enter username to recover first.");
+            return;
+        }
 
         System.out.println("Recovering:");
+
+        if (accountRecover.recover(fxAnswer1.getText(),fxAnswer2.getText()))
+        {
+            System.out.println("Recovery successful password reset.");
+            // remove account from db
+            // add
+
+            //UPDATE user SET password = ? WHERE email = ?
+            updateAccount(accountRecover.getEmail(), fxNewPassword.getText());
+
+        }
+        else
+        {
+            System.out.println("Recovery failed.");
+        }
 
         System.out.println(fxUsername.getText());
         System.out.println(fxAnswer1.getText());
@@ -131,11 +156,14 @@ public class RecoverController implements Initializable
             {
                 String question1 = resultSet.getString("question1");
                 String question2 = resultSet.getString("question2");
+                String answer1 = resultSet.getString("answer1");
+                String answer2 = resultSet.getString("answer2");
+                String password = resultSet.getString("password");
 
                 fxQuestion1.setText(question1);
                 fxQuestion2.setText(question2);
 
-                Admin account = new Admin (username,"A","A","A","A", "A");
+                accountRecover = new Admin (username,password,question1,answer1,question2, answer2);
 
 
             }
@@ -155,6 +183,23 @@ public class RecoverController implements Initializable
         }
 
         return null;
+    }
+
+    public boolean updateAccount (String username, String newPassword) throws SQLException {
+        // search db by username here.
+
+        PreparedStatement preparedStatement = null;
+        String query = "update user set password = ? where email = ?;";
+
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, newPassword);
+        preparedStatement.setString(2, username);
+
+        //Statement statement = connection.createStatement();
+        int insertCount = preparedStatement.executeUpdate();
+
+        return true;
+
     }
 
     public void Back(ActionEvent event)
