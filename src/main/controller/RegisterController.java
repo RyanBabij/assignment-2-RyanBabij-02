@@ -66,8 +66,8 @@ public class RegisterController implements Initializable
         }
     }
 
-    /* Admin Report method
-    Build and display admin report
+    /* Account register method
+    Push account to db
      */
     public void Register(ActionEvent event) throws SQLException {
 
