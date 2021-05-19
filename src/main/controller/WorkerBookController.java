@@ -103,6 +103,8 @@ public class WorkerBookController
         fxChoiceDuration.getItems().add("8");
 
         // 7x7
+        // Columns 1-7, Rows A-G.
+        // 1A-7G.
         // to encourage moving around, seats will be listed in order descending by least frequently used.
         fxChoiceSeat.getItems().add("None");
         fxChoiceSeat.getItems().add("1A");
@@ -116,6 +118,7 @@ public class WorkerBookController
         fxChoiceTime.setValue("None");
         fxChoiceDuration.setValue("None");
         fxChoiceSeat.setValue("None");
+        // Set default date to today.
         fxDate.setValue(LocalDate.now()  );
 
     }
@@ -160,11 +163,10 @@ public class WorkerBookController
         }
     }
 
-    // update controls based on what booking configurations are valid with
-    // the current selection
-    public void Update()
+    // Find seats available on this date, time and duration
+    public void FindSeats()
     {
-        System.out.println("Update constraints");
+        System.out.println("Find available seats.");
     }
 
     public boolean isValidBooking()
