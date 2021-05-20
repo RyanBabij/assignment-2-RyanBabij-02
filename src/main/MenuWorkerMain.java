@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import static java.lang.Thread.sleep;
 
+import main.model.account.Worker;
 import main.model.interfaces.GUI;
 
 import java.net.URL;
@@ -22,6 +23,7 @@ import static java.lang.Thread.sleep;
 
 public class MenuWorkerMain
 {
+    Worker worker = null;
 
     boolean failState;
 
@@ -30,8 +32,9 @@ public class MenuWorkerMain
 
     private int updateCounter;
 
-    public MenuWorkerMain(int sizeX, int sizeY)
+    public MenuWorkerMain(int sizeX, int sizeY, Worker worker)
     {
+        this.worker = worker;
         updateCounter = 0;
 
         failState=false;
@@ -40,7 +43,17 @@ public class MenuWorkerMain
             //Parent test;
             test = FXMLLoader.load(getClass().getResource("ui/MenuWorkerMain.fxml"));
             //Stage stage = new Stage();
-            stage.setTitle("Worker main menu");
+
+            if (worker!=null)
+            {
+                stage.setTitle("Welcome, " +worker.getEmail());
+            }
+            else
+            {
+                stage.setTitle("Worker main menu");
+            }
+
+            //stage.setTitle("Worker main menu");
             stage.setScene(new Scene(test, sizeX, sizeY));
             //stage.show();
             //stage.show();

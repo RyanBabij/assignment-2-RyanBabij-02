@@ -48,6 +48,11 @@ public class Worker implements Account {
         return true;
     }
 
+    public String getEmail()
+    {
+        return email;
+    }
+
     boolean makeBooking(Booking booking)
     {
         return false;

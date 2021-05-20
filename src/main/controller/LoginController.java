@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import main.*;
 import main.model.LoginModel;
+import main.model.account.Worker;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -57,8 +58,9 @@ public class LoginController implements Initializable {
                 }
                 else
                 {
+                    Worker testWorker = new Worker("a","a","a","a,","a","a,");
                     // open worker menu
-                    MenuWorkerMain menuWorkerMain = new MenuWorkerMain(640,480);
+                    MenuWorkerMain menuWorkerMain = new MenuWorkerMain(640,480, loginModel.worker);
                     menuWorkerMain.show();
                 }
 

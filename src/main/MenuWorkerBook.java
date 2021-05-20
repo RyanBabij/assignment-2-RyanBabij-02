@@ -6,11 +6,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import main.model.account.Worker;
 
 import static java.lang.Thread.sleep;
 
 public class MenuWorkerBook
 {
+    Worker worker = null;
 
     boolean failState;
 
@@ -19,8 +21,9 @@ public class MenuWorkerBook
 
     private int updateCounter;
 
-    public MenuWorkerBook(int sizeX, int sizeY)
+    public MenuWorkerBook(int sizeX, int sizeY, Worker worker)
     {
+        this.worker = worker;
         updateCounter = 0;
 
         failState=false;

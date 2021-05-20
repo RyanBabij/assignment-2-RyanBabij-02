@@ -40,7 +40,7 @@ public class WorkerMainController
         System.out.println("BOOKING");
         fxBookingList.getItems().add("CCC");
 
-        MenuWorkerBook menuWorkerBook = new MenuWorkerBook(640,480);
+        MenuWorkerBook menuWorkerBook = new MenuWorkerBook(640,480, null);
         menuWorkerBook.show();
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }

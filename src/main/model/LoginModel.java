@@ -13,6 +13,8 @@ import java.sql.SQLException;
 
 public class LoginModel {
 
+    public Worker worker = null;
+
     Connection connection;
 
     public boolean isAdmin;
@@ -60,7 +62,10 @@ public class LoginModel {
                 }
                 else
                 {
-                    Worker worker = new Worker("a","a","a","a","a","a");
+                    String workerUsername = resultSet.getString("email");
+                    System.out.println("workerusername is :"+workerUsername);
+                    worker = new Worker(workerUsername,"a","a","a","a","a");
+
 
                     System.out.println("Not admin");
                     this.isAdmin=false;
