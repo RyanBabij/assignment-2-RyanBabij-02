@@ -5,10 +5,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import main.model.account.Worker;
 
 public class Main extends Application {
 
     public static Stage primaryStage;
+    public static Worker worker;
 
     @Override
     public void start(Stage primaryStage) throws Exception{

@@ -6,11 +6,13 @@ import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import main.Main;
 import main.MenuWorkerBook;
+import main.model.account.Worker;
 
 import static java.lang.Thread.sleep;
 
 public class WorkerMainController
 {
+    public Worker worker = null;
 
     @FXML
     private ListView fxBookingList;
@@ -38,9 +40,12 @@ public class WorkerMainController
     public void Booking(ActionEvent event)
     {
         System.out.println("BOOKING");
-        fxBookingList.getItems().add("CCC");
 
-        MenuWorkerBook menuWorkerBook = new MenuWorkerBook(640,480, null);
+        // populate worker bookings here
+
+        fxBookingList.getItems().add("POPULATE BOOKINGS HERE");
+
+        MenuWorkerBook menuWorkerBook = new MenuWorkerBook(640,480, worker);
         menuWorkerBook.show();
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }

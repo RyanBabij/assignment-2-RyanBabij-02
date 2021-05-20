@@ -46,7 +46,7 @@ public class MenuWorkerMain
 
             if (worker!=null)
             {
-                stage.setTitle("Welcome, " +worker.getEmail());
+                stage.setTitle("Welcome, " +worker.getEmail() + " (uid "+worker.uid+")");
             }
             else
             {

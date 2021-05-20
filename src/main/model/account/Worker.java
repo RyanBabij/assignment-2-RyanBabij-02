@@ -15,6 +15,9 @@ public class Worker implements Account {
     private String answer1;
     private String answer2;
 
+    // database userid reference
+    public int uid = -1;
+
     public Worker(String email, String password, String question1, String answer1,
                  String question2, String answer2) {
         this.email = email;

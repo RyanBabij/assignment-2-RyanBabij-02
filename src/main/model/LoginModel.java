@@ -1,5 +1,6 @@
 package main.model;
 
+import main.Main;
 import main.SQLConnection;
 import main.model.account.Admin;
 import main.model.account.Worker;
@@ -63,9 +64,14 @@ public class LoginModel {
                 else
                 {
                     String workerUsername = resultSet.getString("email");
+                    int uid = resultSet.getInt("id");
                     System.out.println("workerusername is :"+workerUsername);
                     worker = new Worker(workerUsername,"a","a","a","a","a");
+                    worker.uid = uid;
 
+                    // set global login details
+                    // yeah not very oop but works for now
+                    Main.worker = worker;
 
                     System.out.println("Not admin");
                     this.isAdmin=false;

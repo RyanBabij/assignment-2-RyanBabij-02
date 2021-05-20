@@ -128,7 +128,7 @@ public class WorkerBookController
 
         System.out.println("BACK");
         // back to worker menu
-        MenuWorkerMain menuWorkerMain = new MenuWorkerMain(640,480, null);
+        MenuWorkerMain menuWorkerMain = new MenuWorkerMain(640,480, Main.worker);
         menuWorkerMain.show();
         // hide this window.
         ((Node)(event.getSource())).getScene().getWindow().hide();

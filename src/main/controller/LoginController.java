@@ -58,7 +58,7 @@ public class LoginController implements Initializable {
                 }
                 else
                 {
-                    Worker testWorker = new Worker("a","a","a","a,","a","a,");
+                    //Worker testWorker = new Worker("a","a","a","a,","a","a,");
                     // open worker menu
                     MenuWorkerMain menuWorkerMain = new MenuWorkerMain(640,480, loginModel.worker);
                     menuWorkerMain.show();
