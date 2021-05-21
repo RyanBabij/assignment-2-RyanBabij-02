@@ -151,11 +151,11 @@ public class WorkerBookController
         String strSeat = (String) fxChoiceSeat.getValue();
         //System.out.println("TIMESTR: "+strTime);
 
-        //if (strTime.equals("None") || strDuration.equals("None") || strSeat.equals("None"))
+        if (strTime.equals("None") || strDuration.equals("None") || strSeat.equals("None"))
         {
-            //System.out.println("Booking not complete");
+            System.out.println("Booking not complete");
         }
-        //else
+        else
         {
             System.out.println("Writing booking to db");
             pushBooking(date,strTime,strDuration,strSeat);
@@ -177,10 +177,11 @@ public class WorkerBookController
     public boolean pushBooking(LocalDate date, String strTime, String strDuration, String strSeat) throws SQLException
     {
         System.out.println("Pushing booking to db");
+        System.out.println("uid: "+Main.worker.uid);
 
         PreparedStatement preparedStatement = null;
         String query = "insert into booking (date, hour, duration, userid)"
-                +" VALUES(?,?,?,0)";
+                +" VALUES(?,?,?,?)";
 
         java.sql.Date sqlDate = java.sql.Date.valueOf( date );
 
@@ -188,6 +189,7 @@ public class WorkerBookController
         preparedStatement.setDate(1, sqlDate);
         preparedStatement.setString(2, strTime);
         preparedStatement.setString(3, strDuration);
+        preparedStatement.setInt(4, Main.worker.uid);
 
         //Statement statement = connection.createStatement();
         int insertCount = preparedStatement.executeUpdate();
