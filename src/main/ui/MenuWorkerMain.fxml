@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controller.WorkerMainController">
+<VBox maxHeight="400.0" maxWidth="500.0" minHeight="400.0" minWidth="500.0" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controller.WorkerMainController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button layoutX="574.0" layoutY="336.0" mnemonicParsing="false" text="Logout" onAction="#Logout" />
-            <Button layoutX="363.0" layoutY="336.0" mnemonicParsing="false" text="Make a booking" onAction="#Booking" />
-            <Button layoutX="467.0" layoutY="336.0" mnemonicParsing="false" text="Manage account" onAction="#ManageAccount" />
-            <ListView fx:id="fxBookingList" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="374.0" />
+            <Button layoutX="431.0" layoutY="324.0" mnemonicParsing="false" onAction="#Logout" text="Logout" />
+            <Button layoutX="220.0" layoutY="324.0" mnemonicParsing="false" onAction="#Booking" text="Make a booking" />
+            <Button layoutX="324.0" layoutY="324.0" mnemonicParsing="false" onAction="#ManageAccount" text="Manage account" />
+            <ListView fx:id="fxBookingList" layoutX="14.0" layoutY="14.0" prefHeight="300.0" prefWidth="470.0" />
+            <Button layoutX="14.0" layoutY="324.0" mnemonicParsing="false" text="Delete" />
+            <Label fx:id="fxFeedback" layoutX="14.0" layoutY="355.0" text="Feedback" />
          </children>
     </AnchorPane>
   </children>

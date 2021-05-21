@@ -8,10 +8,13 @@ import java.util.Date;
 public class Booking {
 
     // The account that owns the booking
-    Account account;
-    Seat seat;
-    Date date;
+    //Account account;
+    //Seat seat;
+    //Date date;
     private int duration; // 1-12 hours
+
+    public String seat;
+    public String date;
 
 
 }
