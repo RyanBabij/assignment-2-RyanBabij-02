@@ -59,11 +59,6 @@ public class WorkerMainController
         System.out.println("Loading bookings by uid: "+Main.worker.uid);
         loadBookings(Main.worker.uid);
         System.out.println(vBooking.size()+" matches");
-
-        for (int i=0;i<vBooking.size();++i)
-        {
-            fxBookingList.getItems().add(vBooking.get(i));
-        }
     }
 
     public boolean isDbConnected()
@@ -113,6 +108,9 @@ public class WorkerMainController
             preparedStatement.setInt(1, Main.worker.uid);
 
             resultSet = preparedStatement.executeQuery();
+
+            vBooking.clear();
+            vBookingID.clear();
             while (resultSet.next()) // if there's a hit
             {
                 //System.out.println("next booking");
@@ -124,6 +122,7 @@ public class WorkerMainController
                 int bookingID = resultSet.getInt("id");
 
                 // build the account object
+
 
                 vBooking.add(strDate.toString()+" "+hour+" "+duration);
                 vBookingID.add(bookingID);
@@ -144,6 +143,12 @@ public class WorkerMainController
         {
             preparedStatement.close();
             resultSet.close();
+        }
+
+        fxBookingList.getItems().clear();
+        for (int i=0;i<vBooking.size();++i)
+        {
+            fxBookingList.getItems().add(vBooking.get(i));
         }
     }
 
@@ -171,6 +176,7 @@ public class WorkerMainController
             deleteBooking(vBookingID.get((int)o));
            // System.out.println("o = " + o + " (" + o.getClass() + ")");
         }
+        loadBookings(Main.worker.uid);
     }
 
     public void ManageAccount(ActionEvent event)
