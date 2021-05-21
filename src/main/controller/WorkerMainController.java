@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Vector;
 
 import static java.lang.Thread.sleep;
@@ -41,11 +42,8 @@ public class WorkerMainController
     }
 
     @FXML
-    public void initialize() throws SQLException {
-        for (int i=0;i<100;++i) {
-            fxBookingList.getItems().add("BBBB");
-        }
-
+    public void initialize() throws SQLException
+    {
         if (isDbConnected())
         {
             fxFeedback.setText("Connected");
@@ -62,7 +60,7 @@ public class WorkerMainController
 
         for (int i=0;i<vBooking.size();++i)
         {
-            fxBookingList.getItems().add("AAA");
+            fxBookingList.getItems().add(vBooking.get(i));
         }
     }
 
@@ -117,11 +115,14 @@ public class WorkerMainController
             {
                 System.out.println("next booking");
                 //resultSet.getString("label");
+                Date strDate = resultSet.getDate("date");
+                int hour = resultSet.getInt("hour");
+                int duration = resultSet.getInt("duration");
                 //boolean isAdmin = resultSet.getBoolean("isAdmin");
 
                 // build the account object
 
-                vBooking.add("AYAYA");
+                vBooking.add(strDate.toString()+" "+hour+" "+duration);
                 //return true;
             }
             else
