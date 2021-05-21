@@ -27,6 +27,7 @@ public class WorkerMainController
     public Worker worker = null;
 
     private Vector <String> vBooking = new Vector <String> ();
+    private Vector <Integer> vBookingID = new Vector <Integer> ();
 
     Connection connection;
 
@@ -120,10 +121,12 @@ public class WorkerMainController
                 int hour = resultSet.getInt("hour");
                 int duration = resultSet.getInt("duration");
                 //boolean isAdmin = resultSet.getBoolean("isAdmin");
+                int bookingID = resultSet.getInt("id");
 
                 // build the account object
 
                 vBooking.add(strDate.toString()+" "+hour+" "+duration);
+                vBookingID.add(bookingID);
                 //vBooking.add("Booking");
                 //return true;
             }
@@ -144,14 +147,28 @@ public class WorkerMainController
         }
     }
 
-    public void DeleteBooking()
+    // remove the nth booking from the db
+    void deleteBooking(int index) throws SQLException
     {
+        String sql = "DELETE FROM booking WHERE id = ?";
+
+         PreparedStatement pstmt = connection.prepareStatement(sql);
+
+        // set the corresponding param
+        pstmt.setInt(1, index);
+        // execute the delete statement
+        pstmt.executeUpdate();
+    }
+
+    public void DeleteBooking() throws SQLException {
         System.out.println("DEL");
 
         ObservableList selectedIndices = fxBookingList.getSelectionModel().getSelectedIndices();
 
         for(Object o : selectedIndices){
             System.out.println("Delete index: "+o);
+            System.out.println("Delete booking id: "+vBookingID.get((int)o));
+            deleteBooking(vBookingID.get((int)o));
            // System.out.println("o = " + o + " (" + o.getClass() + ")");
         }
     }
