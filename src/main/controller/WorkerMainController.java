@@ -111,9 +111,9 @@ public class WorkerMainController
             preparedStatement.setInt(1, Main.worker.uid);
 
             resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) // if there's a hit
+            while (resultSet.next()) // if there's a hit
             {
-                System.out.println("next booking");
+                //System.out.println("next booking");
                 //resultSet.getString("label");
                 Date strDate = resultSet.getDate("date");
                 int hour = resultSet.getInt("hour");
@@ -123,13 +123,14 @@ public class WorkerMainController
                 // build the account object
 
                 vBooking.add(strDate.toString()+" "+hour+" "+duration);
+                //vBooking.add("Booking");
                 //return true;
             }
-            else
-            {
-                System.out.println("no more bookings");
+            //else
+            //{
+                //System.out.println("no more bookings");
                 //return false;
-            }
+            //}
         }
         catch (Exception e)
         {
