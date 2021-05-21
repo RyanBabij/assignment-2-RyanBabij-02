@@ -1,5 +1,6 @@
 package main.controller;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -140,6 +141,18 @@ public class WorkerMainController
         {
             preparedStatement.close();
             resultSet.close();
+        }
+    }
+
+    public void DeleteBooking()
+    {
+        System.out.println("DEL");
+
+        ObservableList selectedIndices = fxBookingList.getSelectionModel().getSelectedIndices();
+
+        for(Object o : selectedIndices){
+            System.out.println("Delete index: "+o);
+           // System.out.println("o = " + o + " (" + o.getClass() + ")");
         }
     }
 

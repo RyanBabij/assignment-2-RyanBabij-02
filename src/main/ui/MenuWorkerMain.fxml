@@ -14,7 +14,7 @@
             <Button layoutX="220.0" layoutY="324.0" mnemonicParsing="false" onAction="#Booking" text="Make a booking" />
             <Button layoutX="324.0" layoutY="324.0" mnemonicParsing="false" onAction="#ManageAccount" text="Manage account" />
             <ListView fx:id="fxBookingList" layoutX="14.0" layoutY="14.0" prefHeight="300.0" prefWidth="470.0" />
-            <Button layoutX="14.0" layoutY="324.0" mnemonicParsing="false" text="Delete" />
+            <Button layoutX="14.0" layoutY="324.0" mnemonicParsing="false" text="Delete" onAction="#DeleteBooking" />
             <Label fx:id="fxFeedback" layoutX="14.0" layoutY="355.0" text="Feedback" />
          </children>
     </AnchorPane>
