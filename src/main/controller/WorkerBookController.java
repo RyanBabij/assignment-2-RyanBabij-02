@@ -107,12 +107,14 @@ public class WorkerBookController
         // 1A-7G.
         // to encourage moving around, seats will be listed in order descending by least frequently used.
         fxChoiceSeat.getItems().add("None");
+        /*
         fxChoiceSeat.getItems().add("1A");
         fxChoiceSeat.getItems().add("1B");
         fxChoiceSeat.getItems().add("1C");
         fxChoiceSeat.getItems().add("1D");
         fxChoiceSeat.getItems().add("1E");
         fxChoiceSeat.getItems().add("1F");
+         */
 
         // set default values
         fxChoiceTime.setValue("None");
@@ -124,8 +126,8 @@ public class WorkerBookController
     }
 
     // Logout worker and return to login screen
-    public void Back(ActionEvent event){
-
+    public void Back(ActionEvent event)
+    {
         System.out.println("BACK");
         // back to worker menu
         MenuWorkerMain menuWorkerMain = new MenuWorkerMain(640,480, Main.worker);
@@ -164,9 +166,19 @@ public class WorkerBookController
     }
 
     // Find seats available on this date, time and duration
-    public void FindSeats()
-    {
+    public void FindSeats() throws SQLException {
+        if (fxChoiceTime.getValue().equals("None") || fxChoiceDuration.getValue().equals("None"))
+        {
+            System.out.println("Please fill out date, time and duration.");
+            return;
+        }
         System.out.println("Find available seats.");
+
+        LocalDate date = fxDate.getValue();
+        int time = Integer.parseInt((String) fxChoiceTime.getValue());
+        int duration = Integer.parseInt((String) fxChoiceDuration.getValue());
+
+        getAvailableSeats(date,time,duration);
     }
 
     public boolean isValidBooking()
@@ -196,6 +208,49 @@ public class WorkerBookController
 
         return true;
 
+    }
+
+    public void getAvailableSeats(LocalDate date, int hour, int duration) throws SQLException {
+        System.out.println("Getting available seats for "+date+" "+hour+" "+duration);
+        // find seats which aren't booked during this period
+
+        //Test: Build all seats
+        fxChoiceSeat.getItems().clear();
+        fxChoiceSeat.getItems().add("None");
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet=null;
+        String query = "select * from seat";
+        try
+        {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) // if there's a hit
+            {
+                int sid = resultSet.getInt("sid");
+                String seatName = resultSet.getString("seatName");
+
+                fxChoiceSeat.getItems().add(seatName);
+            }
+        }
+        catch (Exception e)
+        {
+            //return false;
+        }
+        finally
+        {
+            preparedStatement.close();
+            resultSet.close();
+        }
+
+
+        // get all bookings for the date.
+        System.out.println("All bookings for this date.");
+
+        // build list of hours that we want to book and search available seats each hour
+
+        //int hournum = hour - 0900.
     }
 
 }

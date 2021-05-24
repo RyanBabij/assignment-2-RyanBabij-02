@@ -28,8 +28,8 @@ public class AdminMainController
     }
 
     // Logout admin and return to login screen
-    public void Logout(ActionEvent event){
-
+    public void Logout(ActionEvent event)
+    {
         System.out.println("LOGOUT");
         Main.primaryStage.show();
         // hide this window.

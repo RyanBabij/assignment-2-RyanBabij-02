@@ -13,8 +13,6 @@ import static java.lang.Thread.sleep;
 
 import main.model.interfaces.GUI;
 
-import static java.lang.Thread.sleep;
-
 public class MenuAdminMain implements GUI {
 
     boolean failState;

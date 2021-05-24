@@ -6,8 +6,8 @@ import main.model.interfaces.Account;
 import java.util.Date;
 import java.util.Vector;
 
-public class BookingController {
-
+public class BookingController
+{
     Vector<Booking> vBooking;
 
     // create a Booking object from the parameters
@@ -25,6 +25,4 @@ public class BookingController {
     {
         return null;
     }
-
-
 }
