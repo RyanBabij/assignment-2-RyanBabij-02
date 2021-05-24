@@ -29,7 +29,10 @@ import java.time.LocalDateTime;
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Vector;
 
 public class WorkerBookController
 {
@@ -147,7 +150,15 @@ public class WorkerBookController
         System.out.println(fxChoiceDuration.getValue());
         System.out.println(fxChoiceSeat.getValue());
 
-        LocalDate date = fxDate.getValue();
+        java.util.Date date =
+                java.util.Date.from(fxDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+        //LocalDate date = fxDate.getValue();
+        //date = date.withNano(0);
+
+
+
         String strTime = (String) fxChoiceTime.getValue();
         String strDuration = (String) fxChoiceDuration.getValue();
         String strSeat = (String) fxChoiceSeat.getValue();
@@ -160,7 +171,7 @@ public class WorkerBookController
         else
         {
             System.out.println("Writing booking to db");
-            pushBooking(date,strTime,strDuration,strSeat);
+            pushBooking(sqlDate,strTime,strDuration,strSeat);
 
         }
     }
@@ -174,9 +185,15 @@ public class WorkerBookController
         }
         System.out.println("Find available seats.");
 
-        LocalDate date = fxDate.getValue();
+        //LocalDate date = fxDate.getValue();
+        java.util.Date date =
+                java.util.Date.from(fxDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
         int time = Integer.parseInt((String) fxChoiceTime.getValue());
         int duration = Integer.parseInt((String) fxChoiceDuration.getValue());
+
+        System.out.println("Pushing date "+date);
 
         getAvailableSeats(date,time,duration);
     }
@@ -186,7 +203,7 @@ public class WorkerBookController
         return true;
     }
 
-    public boolean pushBooking(LocalDate date, String strTime, String strDuration, String strSeat) throws SQLException
+    public boolean pushBooking(Date date, String strTime, String strDuration, String strSeat) throws SQLException
     {
         System.out.println("Pushing booking to db");
         System.out.println("uid: "+Main.worker.uid);
@@ -195,7 +212,7 @@ public class WorkerBookController
         String query = "insert into booking (date, hour, duration, userid)"
                 +" VALUES(?,?,?,?)";
 
-        java.sql.Date sqlDate = java.sql.Date.valueOf( date );
+        java.sql.Date sqlDate = java.sql.Date.valueOf(String.valueOf(date));
 
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setDate(1, sqlDate);
@@ -210,19 +227,22 @@ public class WorkerBookController
 
     }
 
-    public void getAvailableSeats(LocalDate date, int hour, int duration) throws SQLException {
-        System.out.println("Getting available seats for "+date+" "+hour+" "+duration);
+    public void getAvailableSeats(Date date, int hour, int duration) throws SQLException {
+        System.out.println("Getting available seats for " + date + " " + hour + " " + duration);
         // find seats which aren't booked during this period
 
         //Test: Build all seats
         fxChoiceSeat.getItems().clear();
         fxChoiceSeat.getItems().add("None");
 
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet=null;
-        String query = "select * from seat";
-        try
         {
+
+        Vector<Integer> vSeatId = new Vector<Integer>();
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String query = "select * from seat";
+        try {
             preparedStatement = connection.prepareStatement(query);
             resultSet = preparedStatement.executeQuery();
 
@@ -232,6 +252,38 @@ public class WorkerBookController
                 String seatName = resultSet.getString("seatName");
 
                 fxChoiceSeat.getItems().add(seatName);
+                vSeatId.add(sid);
+            }
+        } catch (Exception e) {
+            //return false;
+        } finally {
+            preparedStatement.close();
+            resultSet.close();
+        }
+        }
+
+        System.out.println("Date: "+date);
+
+        // get all bookings to compare to seats
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet=null;
+        String query = "select * from booking where date = ?";
+        //String query = "select * from booking WHERE date.YEAR='2021'";
+        //String query = "select * from booking WHERE FORMAT(date,'M/dd/yyyy') = FORMAT(?,'M/dd/yyyy')";
+
+        try
+        {
+            preparedStatement = connection.prepareStatement(query);
+            // setObject autoconverts objects to appropriate datatype
+            preparedStatement.setObject(1, date);
+            //preparedStatement.setObject(2, date);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) // if there's a hit
+            {
+                System.out.println("Matching booking date found.");
+                //int sid = resultSet.getInt("sid");
+                //String seatName = resultSet.getString("seatName");
             }
         }
         catch (Exception e)
@@ -243,7 +295,6 @@ public class WorkerBookController
             preparedStatement.close();
             resultSet.close();
         }
-
 
         // get all bookings for the date.
         System.out.println("All bookings for this date.");
