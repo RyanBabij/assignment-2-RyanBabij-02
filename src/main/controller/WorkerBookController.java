@@ -273,37 +273,11 @@ public class WorkerBookController
         fxChoiceSeat.getItems().clear();
         fxChoiceSeat.getItems().add("None");
 
-        {
-
-        Vector<Integer> vSeatId = new Vector<Integer>();
-
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        String query = "select * from seat";
-        try {
-            preparedStatement = connection.prepareStatement(query);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) // if there's a hit
-            {
-                int sid = resultSet.getInt("sid");
-                String seatName = resultSet.getString("seatName");
-
-                fxChoiceSeat.getItems().add(seatName);
-                vSeatId.add(sid);
-            }
-        } catch (Exception e) {
-            //return false;
-        } finally {
-            preparedStatement.close();
-            resultSet.close();
-        }
-        }
 
         System.out.println("Date: "+date);
 
         Vector <Integer> vUnavailableSeats = new Vector <Integer> ();
-
+        {
         // get all bookings to compare to seats
         PreparedStatement preparedStatement = null;
         ResultSet resultSet=null;
@@ -327,15 +301,19 @@ public class WorkerBookController
                 // hour starts at 0 for 0900, and 7 for 1600.
                 int startHour = resultSet.getInt("hour");
                 int endHour = startHour + resultSet.getInt("duration");
-
                 int bookingEndHour = hour+duration;
+
+                System.out.println("db hours: "+startHour+" "+endHour);
+                System.out.println("bk hours: "+hour+" "+bookingEndHour);
+
+
 
                 if ((hour<=endHour && bookingEndHour>=endHour)
                     || hour<=startHour && bookingEndHour>=startHour )
                 {
                     //booking for this seat is not possible.
                     // push this seatid to the unavailable list.
-                    //vUnavailableSeats.add(resultSet.getInt());
+                    vUnavailableSeats.add(resultSet.getInt("seatid"));
                 }
             }
         }
@@ -348,9 +326,46 @@ public class WorkerBookController
             preparedStatement.close();
             resultSet.close();
         }
+        }
 
         // get all bookings for the date.
         System.out.println("All bookings for this date.");
+
+        System.out.println("Unavailable seat ids:");
+        for (int i=0;i<vUnavailableSeats.size();++i)
+        {
+            System.out.println(vUnavailableSeats.get(i));
+        }
+
+        {
+
+            Vector<Integer> vSeatId = new Vector<Integer>();
+
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+            String query = "select * from seat";
+            try {
+                preparedStatement = connection.prepareStatement(query);
+                resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) // if there's a hit
+                {
+                    int sid = resultSet.getInt("sid");
+                    String seatName = resultSet.getString("seatName");
+
+                    if (vUnavailableSeats.contains(sid) == false)
+                    {
+                        fxChoiceSeat.getItems().add(seatName);
+                        vSeatId.add(sid);
+                    }
+                }
+            } catch (Exception e) {
+                //return false;
+            } finally {
+                preparedStatement.close();
+                resultSet.close();
+            }
+        }
 
         // build list of hours that we want to book and search available seats each hour
 
