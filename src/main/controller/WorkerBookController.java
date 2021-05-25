@@ -191,7 +191,7 @@ public class WorkerBookController
                 java.util.Date.from(fxDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
-        int time = Integer.parseInt((String) fxChoiceTime.getValue());
+        int time = (Integer.parseInt((String) fxChoiceTime.getValue())/100)-9;
         int duration = Integer.parseInt((String) fxChoiceDuration.getValue());
 
         System.out.println("Pushing date "+date);
@@ -209,13 +209,15 @@ public class WorkerBookController
         // convert strtime into hours from 9am.
         int iTime = (Integer.parseInt(strTime) / 100) - 9;
         int iDuration = Integer.parseInt(strDuration);
+        //int sid = Integer.parseInt(strSeat);
+        // we need to convert strSeat into sid.
 
         System.out.println("Pushing booking to db");
         System.out.println("uid: "+Main.worker.uid);
 
         PreparedStatement preparedStatement = null;
-        String query = "insert into booking (date, hour, duration, userid)"
-                +" VALUES(?,?,?,?)";
+        String query = "insert into booking (date, hour, duration, userid, seatid)"
+                +" VALUES(?,?,?,?,?)";
 
         java.sql.Date sqlDate = java.sql.Date.valueOf(String.valueOf(date));
 
@@ -224,12 +226,43 @@ public class WorkerBookController
         preparedStatement.setInt(2, iTime);
         preparedStatement.setInt(3, iDuration);
         preparedStatement.setInt(4, Main.worker.uid);
+        preparedStatement.setInt(5, getSeatId(strSeat));
 
         //Statement statement = connection.createStatement();
         int insertCount = preparedStatement.executeUpdate();
 
         return true;
+    }
 
+    public int getSeatId(String seatName) throws SQLException
+    {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String query = "select * from seat";
+        try
+        {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) // if there's a hit
+            {
+                String dbSeatName = resultSet.getString("seatName");
+                if (dbSeatName.equals(seatName))
+                {
+                    return resultSet.getInt("sid");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            return 0;
+        }
+        finally
+        {
+            preparedStatement.close();
+            resultSet.close();
+        }
+        return 0;
     }
 
     public void getAvailableSeats(Date date, int hour, int duration) throws SQLException {
@@ -292,7 +325,18 @@ public class WorkerBookController
 
                 // we need to check if this booking makes the seat unavailable for the given timeslot.
                 // hour starts at 0 for 0900, and 7 for 1600.
-                //int startHour = resultSet.getInt
+                int startHour = resultSet.getInt("hour");
+                int endHour = startHour + resultSet.getInt("duration");
+
+                int bookingEndHour = hour+duration;
+
+                if ((hour<=endHour && bookingEndHour>=endHour)
+                    || hour<=startHour && bookingEndHour>=startHour )
+                {
+                    //booking for this seat is not possible.
+                    // push this seatid to the unavailable list.
+                    //vUnavailableSeats.add(resultSet.getInt());
+                }
             }
         }
         catch (Exception e)
