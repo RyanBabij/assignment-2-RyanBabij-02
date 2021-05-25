@@ -177,7 +177,8 @@ public class WorkerBookController
     }
 
     // Find seats available on this date, time and duration
-    public void FindSeats() throws SQLException {
+    public void FindSeats() throws SQLException
+    {
         if (fxChoiceTime.getValue().equals("None") || fxChoiceDuration.getValue().equals("None"))
         {
             System.out.println("Please fill out date, time and duration.");
@@ -205,6 +206,10 @@ public class WorkerBookController
 
     public boolean pushBooking(Date date, String strTime, String strDuration, String strSeat) throws SQLException
     {
+        // convert strtime into hours from 9am.
+        int iTime = (Integer.parseInt(strTime) / 100) - 9;
+        int iDuration = Integer.parseInt(strDuration);
+
         System.out.println("Pushing booking to db");
         System.out.println("uid: "+Main.worker.uid);
 
@@ -216,8 +221,8 @@ public class WorkerBookController
 
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setDate(1, sqlDate);
-        preparedStatement.setString(2, strTime);
-        preparedStatement.setString(3, strDuration);
+        preparedStatement.setInt(2, iTime);
+        preparedStatement.setInt(3, iDuration);
         preparedStatement.setInt(4, Main.worker.uid);
 
         //Statement statement = connection.createStatement();
@@ -264,12 +269,12 @@ public class WorkerBookController
 
         System.out.println("Date: "+date);
 
+        Vector <Integer> vUnavailableSeats = new Vector <Integer> ();
+
         // get all bookings to compare to seats
         PreparedStatement preparedStatement = null;
         ResultSet resultSet=null;
         String query = "select * from booking where date = ?";
-        //String query = "select * from booking WHERE date.YEAR='2021'";
-        //String query = "select * from booking WHERE FORMAT(date,'M/dd/yyyy') = FORMAT(?,'M/dd/yyyy')";
 
         try
         {
@@ -284,6 +289,10 @@ public class WorkerBookController
                 System.out.println("Matching booking date found.");
                 //int sid = resultSet.getInt("sid");
                 //String seatName = resultSet.getString("seatName");
+
+                // we need to check if this booking makes the seat unavailable for the given timeslot.
+                // hour starts at 0 for 0900, and 7 for 1600.
+                //int startHour = resultSet.getInt
             }
         }
         catch (Exception e)
