@@ -154,15 +154,9 @@ public class WorkerBookController
                 java.util.Date.from(fxDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
-        //LocalDate date = fxDate.getValue();
-        //date = date.withNano(0);
-
-
-
         String strTime = (String) fxChoiceTime.getValue();
         String strDuration = (String) fxChoiceDuration.getValue();
         String strSeat = (String) fxChoiceSeat.getValue();
-        //System.out.println("TIMESTR: "+strTime);
 
         if (strTime.equals("None") || strDuration.equals("None") || strSeat.equals("None"))
         {
@@ -170,8 +164,29 @@ public class WorkerBookController
         }
         else
         {
-            System.out.println("Writing booking to db");
-            pushBooking(sqlDate,strTime,strDuration,strSeat);
+            //if (fxChoiceSeat.getItems().add(seatName);)
+            // date hour duration
+
+            int time = (Integer.parseInt((String) fxChoiceTime.getValue())/100)-9;
+            int duration = Integer.parseInt((String) fxChoiceDuration.getValue());
+
+            Vector <String> vSeatName = getAvailableSeats(sqlDate,time,duration);
+
+            for (int i=0;i<vSeatName.size();++i)
+            {
+                if (vSeatName.get(i).equals(fxChoiceSeat.getValue()))
+                {
+                    System.out.println("Writing booking to db");
+                    pushBooking(sqlDate,strTime,strDuration,strSeat);
+                    return;
+                }
+            }
+            System.out.println("Couldn't find available booking slot for this seat.");
+            fxFeedback.setText("Couldn't find available booking slot for this seat.");
+
+
+
+
 
         }
     }
@@ -196,7 +211,14 @@ public class WorkerBookController
 
         System.out.println("Pushing date "+date);
 
-        getAvailableSeats(date,time,duration);
+        Vector <String> vSeatName = getAvailableSeats(date,time,duration);
+
+        for (int i=0;i<vSeatName.size();++i)
+        {
+            fxChoiceSeat.getItems().add(vSeatName.get(i));
+        }
+
+
     }
 
     public boolean isValidBooking()
@@ -265,55 +287,83 @@ public class WorkerBookController
         return 0;
     }
 
-    public void getAvailableSeats(Date date, int hour, int duration) throws SQLException {
+    // this should return a vector for portability
+    public Vector <String> getAvailableSeats(Date date, int hour, int duration) throws SQLException
+    {
         System.out.println("Getting available seats for " + date + " " + hour + " " + duration);
         // find seats which aren't booked during this period
 
-        //Test: Build all seats
         fxChoiceSeat.getItems().clear();
         fxChoiceSeat.getItems().add("None");
-
 
         System.out.println("Date: "+date);
 
         Vector <Integer> vUnavailableSeats = new Vector <Integer> ();
         {
-        // get all bookings to compare to seats
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet=null;
-        String query = "select * from booking where date = ?";
+            // get all bookings to compare to seats
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet=null;
+            String query = "select * from booking where date = ?";
 
+            try
+            {
+                preparedStatement = connection.prepareStatement(query);
+                // setObject autoconverts objects to appropriate datatype
+                preparedStatement.setObject(1, date);
+                resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) // if there's a hit
+                {
+                    System.out.println("Matching booking date found.");
+
+                    // we need to check if this booking makes the seat unavailable for the given timeslot.
+                    // hour starts at 0 for 0900, and 7 for 1600.
+                    int startHour = resultSet.getInt("hour");
+                    int endHour = startHour + resultSet.getInt("duration");
+                    int bookingEndHour = hour+duration;
+
+                    System.out.println("db hours: "+startHour+" "+endHour);
+                    System.out.println("bk hours: "+hour+" "+bookingEndHour);
+
+
+                    if ((hour<=endHour && bookingEndHour>=endHour)
+                            || hour<=startHour && bookingEndHour>=startHour )
+                    {
+                        //booking for this seat is not possible.
+                        // push this seatid to the unavailable list.
+                        vUnavailableSeats.add(resultSet.getInt("seatid"));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                //return false;
+            }
+            finally
+            {
+                preparedStatement.close();
+                resultSet.close();
+            }
+        }
+
+        Vector<String> vSeatName = new Vector<String>();
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String query = "select * from seat";
         try
         {
             preparedStatement = connection.prepareStatement(query);
-            // setObject autoconverts objects to appropriate datatype
-            preparedStatement.setObject(1, date);
-            //preparedStatement.setObject(2, date);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) // if there's a hit
             {
-                System.out.println("Matching booking date found.");
-                //int sid = resultSet.getInt("sid");
-                //String seatName = resultSet.getString("seatName");
+                int sid = resultSet.getInt("sid");
+                String seatName = resultSet.getString("seatName");
 
-                // we need to check if this booking makes the seat unavailable for the given timeslot.
-                // hour starts at 0 for 0900, and 7 for 1600.
-                int startHour = resultSet.getInt("hour");
-                int endHour = startHour + resultSet.getInt("duration");
-                int bookingEndHour = hour+duration;
-
-                System.out.println("db hours: "+startHour+" "+endHour);
-                System.out.println("bk hours: "+hour+" "+bookingEndHour);
-
-
-
-                if ((hour<=endHour && bookingEndHour>=endHour)
-                    || hour<=startHour && bookingEndHour>=startHour )
+                if (vUnavailableSeats.contains(sid) == false)
                 {
-                    //booking for this seat is not possible.
-                    // push this seatid to the unavailable list.
-                    vUnavailableSeats.add(resultSet.getInt("seatid"));
+                    vSeatName.add(seatName);
                 }
             }
         }
@@ -326,50 +376,7 @@ public class WorkerBookController
             preparedStatement.close();
             resultSet.close();
         }
-        }
 
-        // get all bookings for the date.
-        System.out.println("All bookings for this date.");
-
-        System.out.println("Unavailable seat ids:");
-        for (int i=0;i<vUnavailableSeats.size();++i)
-        {
-            System.out.println(vUnavailableSeats.get(i));
-        }
-
-        {
-
-            Vector<Integer> vSeatId = new Vector<Integer>();
-
-            PreparedStatement preparedStatement = null;
-            ResultSet resultSet = null;
-            String query = "select * from seat";
-            try {
-                preparedStatement = connection.prepareStatement(query);
-                resultSet = preparedStatement.executeQuery();
-
-                while (resultSet.next()) // if there's a hit
-                {
-                    int sid = resultSet.getInt("sid");
-                    String seatName = resultSet.getString("seatName");
-
-                    if (vUnavailableSeats.contains(sid) == false)
-                    {
-                        fxChoiceSeat.getItems().add(seatName);
-                        vSeatId.add(sid);
-                    }
-                }
-            } catch (Exception e) {
-                //return false;
-            } finally {
-                preparedStatement.close();
-                resultSet.close();
-            }
-        }
-
-        // build list of hours that we want to book and search available seats each hour
-
-        //int hournum = hour - 0900.
+        return vSeatName;
     }
-
 }
