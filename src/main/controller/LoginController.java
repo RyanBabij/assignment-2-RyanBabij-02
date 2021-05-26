@@ -53,8 +53,8 @@ public class LoginController implements Initializable {
                     MenuAdminMain menuAdminMain = new MenuAdminMain(640,480);
                     menuAdminMain.show();
 
-                    MenuAdminReport menuAdminReport = new MenuAdminReport(640,480);
-                    menuAdminReport.show();
+                    //MenuAdminReport menuAdminReport = new MenuAdminReport(640,480);
+                    //menuAdminReport.show();
                 }
                 else
                 {

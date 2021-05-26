@@ -5,9 +5,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import main.MenuAdminMain;
 
-public class AdminReportController
+public class AdminLockdownController
 {
-    public AdminReportController()
+    public AdminLockdownController()
     {
     }
 

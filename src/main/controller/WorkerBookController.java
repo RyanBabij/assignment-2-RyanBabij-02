@@ -105,19 +105,6 @@ public class WorkerBookController
         fxChoiceDuration.getItems().add("7");
         fxChoiceDuration.getItems().add("8");
 
-        // 7x7
-        // Columns 1-7, Rows A-G.
-        // 1A-7G.
-        // to encourage moving around, seats will be listed in order descending by least frequently used.
-        fxChoiceSeat.getItems().add("None");
-        /*
-        fxChoiceSeat.getItems().add("1A");
-        fxChoiceSeat.getItems().add("1B");
-        fxChoiceSeat.getItems().add("1C");
-        fxChoiceSeat.getItems().add("1D");
-        fxChoiceSeat.getItems().add("1E");
-        fxChoiceSeat.getItems().add("1F");
-         */
 
         // set default values
         fxChoiceTime.setValue("None");
@@ -184,10 +171,6 @@ public class WorkerBookController
             System.out.println("Couldn't find available booking slot for this seat.");
             fxFeedback.setText("Couldn't find available booking slot for this seat.");
 
-
-
-
-
         }
     }
 
@@ -219,11 +202,6 @@ public class WorkerBookController
         }
 
 
-    }
-
-    public boolean isValidBooking()
-    {
-        return true;
     }
 
     public boolean pushBooking(Date date, String strTime, String strDuration, String strSeat) throws SQLException

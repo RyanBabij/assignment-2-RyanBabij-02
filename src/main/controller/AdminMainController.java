@@ -4,6 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import main.Main;
+import main.MenuAdminLockdown;
+import main.MenuAdminReport;
+import main.MenuWorkerBook;
 
 import static java.lang.Thread.sleep;
 
@@ -25,6 +28,11 @@ public class AdminMainController
         System.out.println("REPORT");
 
         // Build and show report menu
+
+        MenuAdminReport menuAdminReport = new MenuAdminReport(640,480);
+        menuAdminReport.show();
+        ((Node)(event.getSource())).getScene().getWindow().hide();
+
     }
 
     // Logout admin and return to login screen
@@ -40,7 +48,10 @@ public class AdminMainController
 
         System.out.println("LOCKDOWN");
 
-        // Build and show report menu
+        // Build and show lockdown menu
+        MenuAdminLockdown menuAdminLockdown = new MenuAdminLockdown(640,480);
+        menuAdminLockdown.show();
+        ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 
 }
