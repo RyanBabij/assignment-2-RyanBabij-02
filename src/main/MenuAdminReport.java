@@ -20,7 +20,7 @@ public class MenuAdminReport implements GUI {
     Stage stage = new Stage();
 
     @FXML
-    private Label welcomeText;
+    private Label fxMainLabel;
 
     private int updateCounter;
 
@@ -46,47 +46,11 @@ public class MenuAdminReport implements GUI {
     @FXML
     public void initialize()
     {
-        welcomeText.setText("AAA");
-        initBackgroundThread();
+        fxMainLabel.setText("AAA\nBBB");
     }
 
     public void init()
     {
-    }
-
-    // This thread runs periodically in the background to update the GUI if necessary.
-    private void initBackgroundThread()
-    {
-        // Define the thread
-
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() {
-                while (true) {
-                    //String userInput = input.nextLine();
-
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            ++updateCounter;
-                            welcomeText.setText(Integer.toString(updateCounter));
-                        }
-                    });
-                    try {
-                        sleep(1000);
-                    }
-                    catch (Exception e)
-                    {
-                        System.out.println("sleep exception");
-                    }
-                }
-            }
-        };
-
-        // Start the thread
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
     }
 
     public void show()

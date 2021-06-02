@@ -3,10 +3,14 @@ package main.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import main.MenuAdminMain;
 
 public class AdminReportController
 {
+    @FXML
+    private Label fxMainLabel;
+
     public AdminReportController()
     {
     }
@@ -14,6 +18,7 @@ public class AdminReportController
     @FXML
     public void initialize()
     {
+        fxMainLabel.setText("ABAB\nBABA");
     }
 
     // Logout worker and return to login screen
