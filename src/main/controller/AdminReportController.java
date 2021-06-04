@@ -8,10 +8,9 @@ import main.Main;
 import main.MenuAdminMain;
 import main.SQLConnection;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class AdminReportController
 {
@@ -56,7 +55,7 @@ public class AdminReportController
         rs.next();
         int count = rs.getInt(1);
 
-        fxMainLabel.setText("Admin report:\nTotal bookings: "+count+"\nBookings for today: X\nNumber of users: X");
+        fxMainLabel.setText("Admin report:\nTotal bookings: "+count+"\nBookings for today: "+getTodayBookings()+"\nNumber of users: "+getTotalUsers());
     }
 
     public boolean isDbConnected()
@@ -80,6 +79,51 @@ public class AdminReportController
         menuAdminMain.show();
         // hide this window.
         ((Node)(event.getSource())).getScene().getWindow().hide();
+    }
+
+    int getTodayBookings() throws SQLException {
+        java.util.Date date =
+                java.util.Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet=null;
+        String query = "select count(*) from booking where date = ?";
+
+        try
+        {
+            preparedStatement = connection.prepareStatement(query);
+            // setObject autoconverts objects to appropriate datatype
+            preparedStatement.setObject(1, date);
+            resultSet = preparedStatement.executeQuery();
+
+            //Retrieving the result
+            resultSet.next();
+            return resultSet.getInt(1);
+        }
+        catch (Exception e)
+        {
+            //return false;
+        }
+        finally
+        {
+            preparedStatement.close();
+            resultSet.close();
+        }
+
+        return 0;
+    }
+    int getTotalUsers() throws SQLException
+    {
+        //Creating the Statement object
+        Statement stmt = connection.createStatement();
+        //Query to get the number of rows in a table
+        String query = "select count(*) from user";
+        //Executing the query
+        ResultSet rs = stmt.executeQuery(query);
+        //Retrieving the result
+        rs.next();
+        return rs.getInt(1);
     }
 
 }
