@@ -8,7 +8,13 @@ This application allows employees to book desks in an office using a hotdesking 
 
 ## How to run the application
 
-What is the main class.
+Import the application into Intellij IDEA.
+
+The main class is Main.java.
+
+Click the run icon (green arrow) and let it build and run.
+
+Try entering default user credentials (admin, admin), (nadmin, nadmin).
 
 ## Requirements and dependencies
 
