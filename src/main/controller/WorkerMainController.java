@@ -96,7 +96,8 @@ public class WorkerMainController
     }
 
     // load all of this user's bookings from db
-    void loadBookings(int userID) throws SQLException {
+    void loadBookings(int userID) throws SQLException
+    {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet=null;
         String query = "select * from booking where userid = ?";

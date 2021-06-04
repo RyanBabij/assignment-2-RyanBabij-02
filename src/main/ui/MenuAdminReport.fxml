@@ -12,12 +12,12 @@
          <children>
              <Button layoutX="585.0" layoutY="336.0" mnemonicParsing="false" onAction="#Back" text="Back" />
              <Label fx:id="fxMainLabel" layoutX="14.0" layoutY="14.0" text="Label" />
-            <ListView layoutX="220.0" layoutY="31.0" prefHeight="259.0" prefWidth="200.0" />
-            <ListView layoutX="426.0" layoutY="31.0" prefHeight="259.0" prefWidth="200.0" />
+            <ListView fx:id="fxBookingList" layoutX="220.0" layoutY="31.0" prefHeight="259.0" prefWidth="200.0" />
+            <ListView fx:id="fxBookingListToday" layoutX="426.0" layoutY="31.0" prefHeight="259.0" prefWidth="200.0" />
             <Label layoutX="220.0" layoutY="14.0" text="Today's Bookings" />
             <Label layoutX="426.0" layoutY="14.0" text="All Bookings" />
-            <Button layoutX="220.0" layoutY="299.0" mnemonicParsing="false" text="Delete" />
-            <Button layoutX="426.0" layoutY="299.0" mnemonicParsing="false" text="Delete" />
+            <Button layoutX="220.0" layoutY="299.0" mnemonicParsing="false" text="Delete" onAction="#DeleteFromToday" />
+            <Button layoutX="426.0" layoutY="299.0" mnemonicParsing="false" text="Delete" onAction="#DeleteFromAll" />
          </children>
     </AnchorPane>
   </children>
