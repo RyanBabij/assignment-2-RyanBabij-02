@@ -18,6 +18,8 @@ What is the main class.
 
 ## Known issues
 
+- Bookings avoid time collisions with other booksings, but the user is able to book multiple seats for the same time.
+
 ## References and tutorials
 
 - **IntelliJ IDEA MarkDown guide**. jetbrains.com/help/idea/markdown.html
