@@ -166,7 +166,8 @@ public class WorkerMainController
         pstmt.executeUpdate();
     }
 
-    public void DeleteBooking() throws SQLException {
+    public void DeleteBooking() throws SQLException
+    {
         System.out.println("DEL");
 
         ObservableList selectedIndices = fxBookingList.getSelectionModel().getSelectedIndices();

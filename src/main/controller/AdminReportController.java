@@ -1,5 +1,6 @@
 package main.controller;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -52,11 +53,6 @@ public class AdminReportController
             System.out.println("DB not connected");
         }
 
-        // populate list view with bookings
-        //System.out.println("Loading bookings by uid: "+ Main.worker.uid);
-        //loadBookings(Main.worker.uid);
-        //System.out.println(vBooking.size()+" matches");
-
         //Creating the Statement object
         Statement stmt = connection.createStatement();
         //Query to get the number of rows in a table
@@ -72,6 +68,8 @@ public class AdminReportController
         loadBookings();
         loadTodayBookings();
     }
+
+
 
     public boolean isDbConnected()
     {
@@ -236,13 +234,49 @@ public class AdminReportController
         }
     }
 
-    public void DeleteFromAll()
+    public void DeleteFromAll() throws SQLException
     {
         System.out.println("Delete from all");
+
+        ObservableList selectedIndices = fxBookingList.getSelectionModel().getSelectedIndices();
+
+        for(Object o : selectedIndices)
+        {
+            System.out.println("Delete index: "+o);
+            System.out.println("Delete booking id: "+vBookingID.get((int)o));
+            deleteBooking(vBookingID.get((int)o));
+            //System.out.println("o = " + o + " (" + o.getClass() + ")");
+        }
+        loadBookings();
+        loadTodayBookings();
     }
-    public void DeleteFromToday()
-    {
+    public void DeleteFromToday() throws SQLException {
         System.out.println("Delete from today");
+
+        ObservableList selectedIndices = fxBookingListToday.getSelectionModel().getSelectedIndices();
+
+        for(Object o : selectedIndices)
+        {
+            System.out.println("Delete index: "+o);
+            System.out.println("Delete booking id: "+vBookingIDToday.get((int)o));
+            deleteBooking(vBookingIDToday.get((int)o));
+            // System.out.println("o = " + o + " (" + o.getClass() + ")");
+        }
+        loadBookings();
+        loadTodayBookings();
+    }
+
+
+    void deleteBooking(int index) throws SQLException
+    {
+        String sql = "DELETE FROM booking WHERE id = ?";
+
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+
+        // set the corresponding param
+        pstmt.setInt(1, index);
+        // execute the delete statement
+        pstmt.executeUpdate();
     }
 
 }
