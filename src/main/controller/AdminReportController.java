@@ -21,12 +21,15 @@ public class AdminReportController
     @FXML
     private ListView fxBookingList;
     @FXML
-    private ListView fxBookingListAll;
+    private ListView fxBookingListToday;
 
     Connection connection;
 
     private Vector<String> vBooking = new Vector <String> ();
     private Vector <Integer> vBookingID = new Vector <Integer> ();
+
+    private Vector<String> vBookingToday = new Vector <String> ();
+    private Vector <Integer> vBookingIDToday = new Vector <Integer> ();
 
     public AdminReportController()
     {
@@ -67,6 +70,7 @@ public class AdminReportController
         fxMainLabel.setText("Admin report:\nTotal bookings: "+count+"\nBookings for today: "+getTodayBookings()+"\nNumber of users: "+getTotalUsers());
 
         loadBookings();
+        loadTodayBookings();
     }
 
     public boolean isDbConnected()
@@ -179,6 +183,56 @@ public class AdminReportController
         for (int i=0;i<vBooking.size();++i)
         {
             fxBookingList.getItems().add(vBooking.get(i));
+        }
+    }
+
+    // load all of bookings into list
+    void loadTodayBookings() throws SQLException
+    {
+        java.util.Date date =
+                java.util.Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet=null;
+        String query = "select * from booking where date = ?";
+        try
+        {
+            System.out.println("Querying bookings");
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, sqlDate);
+
+            resultSet = preparedStatement.executeQuery();
+
+            vBookingToday.clear();
+            vBookingIDToday.clear();
+            while (resultSet.next()) // if there's a hit
+            {
+                java.util.Date strDate = resultSet.getDate("date");
+                int hour = resultSet.getInt("hour");
+                int duration = resultSet.getInt("duration");
+                //boolean isAdmin = resultSet.getBoolean("isAdmin");
+                int bookingID = resultSet.getInt("id");
+
+                vBookingToday.add(strDate.toString()+" "+hour+" "+duration);
+                vBookingIDToday.add(bookingID);
+            }
+        }
+        catch (Exception e)
+        {
+        }
+        finally
+        {
+            preparedStatement.close();
+            resultSet.close();
+        }
+
+        fxBookingListToday.getItems().clear();
+        for (int i=0;i<vBookingToday.size();++i)
+        {
+            fxBookingListToday.getItems().add(vBookingToday.get(i));
         }
     }
 
