@@ -7,6 +7,8 @@ import javafx.scene.control.*;
 import main.Main;
 import main.MenuWorkerMain;
 import main.SQLConnection;
+import main.model.account.Admin;
+import main.model.account.Worker;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -67,14 +69,7 @@ public class WorkerAccountDetailsController
             fxFeedback.setText("Not Connected");
         }
 
-        fxUsername.setText(Main.worker.getEmail());
-        fxQuestion1.setText(Main.worker.getQuestion1());
-        fxAnswer1.setText(Main.worker.getAnswer1());
-        fxQuestion2.setText(Main.worker.getQuestion2());
-        fxAnswer2.setText(Main.worker.getAnswer2());
-
-
-        fxPassword.setText(Main.worker.getPassword());
+        updateForm();
     }
 
     // Logout worker and return to login screen
@@ -88,14 +83,50 @@ public class WorkerAccountDetailsController
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
     // Update the account with the new details in the form
-    public void Update(ActionEvent event)
-    {
+    public void Update(ActionEvent event) throws SQLException {
         System.out.println("Update details.");
 
         String username = fxUsername.getText();
         String password = fxPassword.getText();
+        String question1 = fxQuestion1.getText();
+        String answer1 = fxAnswer1.getText();
+        String question2 = fxQuestion2.getText();
+        String answer2 = fxAnswer2.getText();
 
         System.out.println("Update username to "+username);
         System.out.println("Update password to "+password);
+        System.out.println("Update q1 to "+question1);
+        System.out.println("Update a1 to "+answer1);
+        System.out.println("Update q2 to "+question2);
+        System.out.println("Update a2 to "+answer2);
+
+        PreparedStatement preparedStatement = null;
+        String query = "UPDATE user SET password = ? WHERE id = ?";
+        try
+        {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, password);
+            preparedStatement.setInt(2,Main.worker.uid );
+            preparedStatement.executeUpdate();
+        }
+        catch (Exception e)
+        {
+        }
+        finally
+        {
+            preparedStatement.close();
+        }
+
+        updateForm();
+    }
+
+    public void updateForm()
+    {
+        fxUsername.setText(Main.worker.getEmail());
+        fxQuestion1.setText(Main.worker.getQuestion1());
+        fxAnswer1.setText(Main.worker.getAnswer1());
+        fxQuestion2.setText(Main.worker.getQuestion2());
+        fxAnswer2.setText(Main.worker.getAnswer2());
+        fxPassword.setText(Main.worker.getPassword());
     }
 }
