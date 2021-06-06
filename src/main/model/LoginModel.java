@@ -64,9 +64,14 @@ public class LoginModel {
                 else
                 {
                     String workerUsername = resultSet.getString("email");
+                    String workerPassword = resultSet.getString("password");
+                    String workerQuestion1 = resultSet.getString("question1");
+                    String workerAnswer1 = resultSet.getString("answer1");
+                    String workerQuestion2 = resultSet.getString("question2");
+                    String workerAnswer2 = resultSet.getString("answer2");
                     int uid = resultSet.getInt("id");
                     System.out.println("workerusername is :"+workerUsername);
-                    worker = new Worker(workerUsername,"a","a","a","a","a");
+                    worker = new Worker(workerUsername,workerPassword,workerQuestion1,workerAnswer1,workerQuestion2,workerAnswer2);
                     worker.uid = uid;
 
                     // set global login details

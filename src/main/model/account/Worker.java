@@ -55,6 +55,26 @@ public class Worker implements Account {
     {
         return email;
     }
+    public String getPassword()
+    {
+        return password;
+    }
+    public String getQuestion1()
+    {
+        return question1;
+    }
+    public String getAnswer1()
+    {
+        return answer1;
+    }
+    public String getQuestion2()
+    {
+        return question2;
+    }
+    public String getAnswer2()
+    {
+        return answer2;
+    }
 
     boolean makeBooking(Booking booking)
     {
