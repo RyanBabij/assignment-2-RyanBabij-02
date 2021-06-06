@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import main.Main;
+import main.MenuWorkerAccountDetails;
 import main.MenuWorkerBook;
 import main.SQLConnection;
 import main.model.account.Admin;
@@ -184,6 +185,10 @@ public class WorkerMainController
     public void ManageAccount(ActionEvent event)
     {
         System.out.println("MANAGE ACCOUNT");
+
+        MenuWorkerAccountDetails menuWorkerAccountDetails = new MenuWorkerAccountDetails(640,480, worker);
+        menuWorkerAccountDetails.show();
+        ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 
 }
