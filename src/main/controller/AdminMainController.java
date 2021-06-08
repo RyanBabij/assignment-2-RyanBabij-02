@@ -3,23 +3,65 @@ package main.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import main.Main;
-import main.MenuAdminLockdown;
-import main.MenuAdminReport;
-import main.MenuWorkerBook;
+import javafx.scene.control.Label;
+import main.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import static java.lang.Thread.sleep;
 
 public class AdminMainController
 {
+    @FXML
+    private Label fxMainLabel;
+
+    Connection connection;
+
+
     public AdminMainController()
     {
+        connection = SQLConnection.connect();
+        if (connection == null)
+            System.exit(1);
     }
 
     @FXML
-    public void initialize()
-    {
+    public void initialize() throws SQLException {
+
+        if (isDbConnected())
+        {
+            System.out.println("DB connected");
+        }
+        else
+        {
+            System.out.println("DB not connected");
+        }
+
+        fxMainLabel.setText("CURRENT BOOKING LIST GOES HERE.");
+
+        loadTodayBookings();
+
+        // get current date
+        // list all bookings which fill this date
     }
+
+    public boolean isDbConnected()
+    {
+        try
+        {
+            return !connection.isClosed();
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
     /* Admin Report method
     Build and display admin report
      */
@@ -52,6 +94,63 @@ public class AdminMainController
         MenuAdminLockdown menuAdminLockdown = new MenuAdminLockdown(640,480);
         menuAdminLockdown.show();
         ((Node)(event.getSource())).getScene().getWindow().hide();
+    }
+
+    // load all of bookings into list
+    void loadTodayBookings() throws SQLException
+    {
+        java.util.Date date =
+                java.util.Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+        String output = "Current bookings:\n";
+
+
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet=null;
+        String query = "select * from booking where date = ?";
+        try
+        {
+            System.out.println("Querying bookings");
+
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setDate(1, sqlDate);
+
+            resultSet = preparedStatement.executeQuery();
+
+            //vBookingToday.clear();
+            //vBookingIDToday.clear();
+            while (resultSet.next()) // if there's a hit
+            {
+                java.util.Date strDate = resultSet.getDate("date");
+                int hour = resultSet.getInt("hour");
+                int duration = resultSet.getInt("duration");
+                //boolean isAdmin = resultSet.getBoolean("isAdmin");
+                int bookingID = resultSet.getInt("id");
+
+                output += strDate.toString()+" "+hour+" "+duration+"\n";
+
+                //vBookingToday.add(strDate.toString()+" "+hour+" "+duration);
+                //vBookingIDToday.add(bookingID);
+            }
+        }
+        catch (Exception e)
+        {
+        }
+        finally
+        {
+            preparedStatement.close();
+            resultSet.close();
+        }
+
+        //fxBookingListToday.getItems().clear();
+        //for (int i=0;i<vBookingToday.size();++i)
+        {
+            //fxBookingListToday.getItems().add(vBookingToday.get(i));
+        }
+
+        fxMainLabel.setText(output);
     }
 
 }

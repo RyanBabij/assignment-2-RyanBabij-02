@@ -1,15 +1,25 @@
 package main.controller;
 
+import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
+import javafx.scene.shape.ArcType;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.stage.Stage;
 import main.*;
 import main.model.LoginModel;
 import main.model.account.Worker;
 
+import java.awt.*;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -31,8 +41,8 @@ public class LoginController implements Initializable {
         }else {
             isConnected.setText("Not Connected");
         }
-
     }
+
     /* login Action method
        check if user input is the same as database.
      */
