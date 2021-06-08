@@ -161,7 +161,7 @@ public class WorkerBookController
 
             for (int i=0;i<vSeatName.size();++i)
             {
-                if (vSeatName.get(i).equals(fxChoiceSeat.getValue()))
+                if (vSeatName.get(i).equals(strSeat))
                 {
                     System.out.println("Writing booking to db");
                     pushBooking(sqlDate,strTime,strDuration,strSeat);
