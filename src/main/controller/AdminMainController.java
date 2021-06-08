@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Vector;
 
 import static java.lang.Thread.sleep;
 
@@ -21,6 +22,8 @@ public class AdminMainController
     private Label fxMainLabel;
 
     Connection connection;
+
+    Vector <String> vSeatName = new Vector <String> ();
 
 
     public AdminMainController()
@@ -45,6 +48,16 @@ public class AdminMainController
         fxMainLabel.setText("CURRENT BOOKING LIST GOES HERE.");
 
         loadTodayBookings();
+
+        loadSeats();
+
+        String strSeat = "";
+        for (int i=0;i<vSeatName.size();++i)
+        {
+            strSeat+=vSeatName.get(i)+"\n";
+        }
+
+        fxMainLabel.setText(strSeat);
 
         // get current date
         // list all bookings which fill this date
@@ -151,6 +164,40 @@ public class AdminMainController
         }
 
         fxMainLabel.setText(output);
+    }
+
+    void loadSeats() throws SQLException {
+        vSeatName.clear();
+        //Vector<String> vSeatName = new Vector<String>();
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String query = "select * from seat";
+        try
+        {
+            preparedStatement = connection.prepareStatement(query);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) // if there's a hit
+            {
+                int sid = resultSet.getInt("sid");
+                String seatName = resultSet.getString("seatName");
+
+                //if (vUnavailableSeats.contains(sid) == false)
+                {
+                    vSeatName.add(seatName);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            //return false;
+        }
+        finally
+        {
+            preparedStatement.close();
+            resultSet.close();
+        }
     }
 
 }
