@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Vector;
 
 import static java.lang.Thread.sleep;
@@ -23,7 +24,14 @@ public class AdminMainController
 
     Connection connection;
 
+    // vector of all seat names
     Vector <String> vSeatName = new Vector <String> ();
+    // vector of bookings associated with each seat
+    Vector <String> vBooking = new Vector <String> ();
+
+    // username and seat name of each active booking
+    Vector <String> vBookingUser = new Vector <String> ();
+    Vector <String> vBookingSeat = new Vector <String> ();
 
 
     public AdminMainController()
@@ -54,7 +62,7 @@ public class AdminMainController
         String strSeat = "";
         for (int i=0;i<vSeatName.size();++i)
         {
-            strSeat+=vSeatName.get(i)+"\n";
+            strSeat+=vSeatName.get(i)+": "+vBooking.get(i)+"\n";
         }
 
         fxMainLabel.setText(strSeat);
@@ -116,12 +124,17 @@ public class AdminMainController
                 java.util.Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
+        // get current hour so we can find any bookings active on this hour
+        Calendar rightNow = Calendar.getInstance();
+        int currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
+        currentHour = 0;
+        //System.out.println("Current hour: "+currentHour);
+
         String output = "Current bookings:\n";
-
-
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet=null;
+        // get all of today's bookings
         String query = "select * from booking where date = ?";
         try
         {
@@ -141,8 +154,18 @@ public class AdminMainController
                 int duration = resultSet.getInt("duration");
                 //boolean isAdmin = resultSet.getBoolean("isAdmin");
                 int bookingID = resultSet.getInt("id");
+                int seatID = resultSet.getInt("seatid");
+                int userID = resultSet.getInt("userid");
 
                 output += strDate.toString()+" "+hour+" "+duration+"\n";
+
+                System.out.println("Found booking: "+strDate+" "+hour+" "+duration);
+
+                // check if this booking is currently active
+                if ( currentHour >= hour && currentHour <= hour+duration)
+                {
+                    System.out.println("This booking is active by user "+userID+" on seat "+seatID);
+                }
 
                 //vBookingToday.add(strDate.toString()+" "+hour+" "+duration);
                 //vBookingIDToday.add(bookingID);
@@ -168,6 +191,7 @@ public class AdminMainController
 
     void loadSeats() throws SQLException {
         vSeatName.clear();
+        vBooking.clear();
         //Vector<String> vSeatName = new Vector<String>();
 
         PreparedStatement preparedStatement = null;
@@ -186,6 +210,7 @@ public class AdminMainController
                 //if (vUnavailableSeats.contains(sid) == false)
                 {
                     vSeatName.add(seatName);
+                    vBooking.add("Not booked");
                 }
             }
         }
