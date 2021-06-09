@@ -55,13 +55,25 @@ public class AdminMainController
 
         fxMainLabel.setText("CURRENT BOOKING LIST GOES HERE.");
 
+        // load list of active bookings today
         loadTodayBookings();
-
+        // load list of seat names
         loadSeats();
+
+        // output the information
 
         String strSeat = "";
         for (int i=0;i<vSeatName.size();++i)
         {
+            for (int i2=0;i2<vBookingSeat.size();++i2)
+            {
+                if (vBookingSeat.get(i2).equals(vSeatName.get(i)))
+                {
+                    // this seat has an active booking.
+                    vBooking.set(i,"Currently booked by "+vBookingUser.get(i2));
+                }
+            }
+
             strSeat+=vSeatName.get(i)+": "+vBooking.get(i)+"\n";
         }
 
@@ -127,15 +139,16 @@ public class AdminMainController
         // get current hour so we can find any bookings active on this hour
         Calendar rightNow = Calendar.getInstance();
         int currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
-        currentHour = 0;
-        //System.out.println("Current hour: "+currentHour);
+        // 9am is 0 with the current system, so we need to remove 9 hours.
+        currentHour-=9;
 
         String output = "Current bookings:\n";
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet=null;
         // get all of today's bookings
-        String query = "select * from booking where date = ?";
+        String query = "select * from booking INNER JOIN seat ON booking.seatid = seat.sid "
+        + "INNER JOIN user ON booking.userid = user.id where date = ?";
         try
         {
             System.out.println("Querying bookings");
@@ -156,6 +169,8 @@ public class AdminMainController
                 int bookingID = resultSet.getInt("id");
                 int seatID = resultSet.getInt("seatid");
                 int userID = resultSet.getInt("userid");
+                String seatName = resultSet.getString("seatname");
+                String userName = resultSet.getString("email");
 
                 output += strDate.toString()+" "+hour+" "+duration+"\n";
 
@@ -164,7 +179,9 @@ public class AdminMainController
                 // check if this booking is currently active
                 if ( currentHour >= hour && currentHour <= hour+duration)
                 {
-                    System.out.println("This booking is active by user "+userID+" on seat "+seatID);
+                    System.out.println("This booking is active by user "+userName+" on seat "+seatName);
+                    vBookingUser.add(userName);
+                    vBookingSeat.add(seatName);
                 }
 
                 //vBookingToday.add(strDate.toString()+" "+hour+" "+duration);
