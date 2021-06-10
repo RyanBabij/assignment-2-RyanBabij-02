@@ -10,7 +10,7 @@
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
             <Button onAction="#Lockdown" layoutX="109.0" layoutY="78.0" mnemonicParsing="false" text="Confirm Lockdown" />
-            <Label layoutX="43.0" layoutY="38.0" text="Warming, this will irreversibly modify bookings" />
+            <Label fx:id="fxMainLabel" layoutX="43.0" layoutY="38.0" text="Warning, this will irreversibly modify bookings" />
             <Button layoutX="141.0" layoutY="110.0" mnemonicParsing="false" text="Cancel" onAction="#Back" />
       </children>
     </AnchorPane>
