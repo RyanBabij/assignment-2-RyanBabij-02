@@ -27,4 +27,9 @@ public class AdminLockdownController
         ((Node)(event.getSource())).getScene().getWindow().hide();
     }
 
+    public void Lockdown()
+    {
+        System.out.println("Activate lockdown here");
+    }
+
 }
