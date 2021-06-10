@@ -63,6 +63,21 @@ public class AdminMainController
         // output the information
 
         String strSeat = "";
+
+        java.util.Date date =
+                java.util.Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+        java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+        // get current hour so we can find any bookings active on this hour
+        Calendar rightNow = Calendar.getInstance();
+        int currentHour = rightNow.get(Calendar.HOUR_OF_DAY);
+        // 9am is 0 with the current system, so we need to remove 9 hours.
+        currentHour-=9;
+
+
+        strSeat+="Current bookings for "+sqlDate+" hour "+currentHour+":\n";
+
+
         for (int i=0;i<vSeatName.size();++i)
         {
             for (int i2=0;i2<vBookingSeat.size();++i2)
@@ -142,7 +157,7 @@ public class AdminMainController
         // 9am is 0 with the current system, so we need to remove 9 hours.
         currentHour-=9;
 
-        String output = "Current bookings:\n";
+        String output = "Current bookings for "+sqlDate+":\n";
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet=null;
