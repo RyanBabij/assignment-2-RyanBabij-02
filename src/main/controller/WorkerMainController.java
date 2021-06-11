@@ -101,7 +101,7 @@ public class WorkerMainController
     {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet=null;
-        String query = "select * from booking where userid = ?";
+        String query = "select * from booking INNER JOIN seat ON booking.seatid = seat.sid where userid = ?";
         try
         {
             System.out.println("Querying bookings");
@@ -115,27 +115,20 @@ public class WorkerMainController
             vBookingID.clear();
             while (resultSet.next()) // if there's a hit
             {
-                //System.out.println("next booking");
-                //resultSet.getString("label");
                 Date strDate = resultSet.getDate("date");
                 int hour = resultSet.getInt("hour");
                 int duration = resultSet.getInt("duration");
                 //boolean isAdmin = resultSet.getBoolean("isAdmin");
                 int bookingID = resultSet.getInt("id");
 
-                // build the account object
+                boolean activeSeat = resultSet.getBoolean("active");
 
-
-                vBooking.add(strDate.toString()+" "+hour+" "+duration);
-                vBookingID.add(bookingID);
-                //vBooking.add("Booking");
-                //return true;
+                // add the booking to the user list if the seat isn't locked down
+                if (activeSeat) {
+                    vBooking.add(strDate.toString() + " " + hour + " " + duration);
+                    vBookingID.add(bookingID);
+                }
             }
-            //else
-            //{
-                //System.out.println("no more bookings");
-                //return false;
-            //}
         }
         catch (Exception e)
         {

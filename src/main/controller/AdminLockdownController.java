@@ -117,7 +117,7 @@ public class AdminLockdownController
     // load all of this user's bookings from db
     void lockdownSeats(boolean activeMode) throws SQLException
     {
-        System.out.println("Cycle seat active.");
+        //System.out.println("Cycle seat active.");
 
         PreparedStatement preparedStatement = null;
         String query = "UPDATE seat SET active = ? WHERE canLockdown = true";
