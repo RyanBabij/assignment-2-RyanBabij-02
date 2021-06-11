@@ -10,10 +10,14 @@ import main.Main;
 import main.MenuAdminMain;
 import main.SQLConnection;
 
+import java.io.FileWriter;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Vector;
+
+import java.io.File;  // Import the File class
+import java.io.IOException;  // Import the IOException class to handle errors
 
 public class AdminReportController
 {
@@ -282,7 +286,68 @@ public class AdminReportController
     // Export all bookings to a CSV file.
     public void Export()
     {
-        System.out.println("EXPORT");
+        // create CSV file
+        try
+        {
+            File file = new File("export.csv");
+            if (file.createNewFile())
+            {
+                System.out.println("File created: " + file.getName());
+            }
+            else
+            {
+                System.out.println("File already exists.");
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.println("File error.");
+            e.printStackTrace();
+        }
+
+        // write csv
+        try
+        {
+            FileWriter fileWriter = new FileWriter("export.csv");
+
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet=null;
+            // get all of today's bookings
+            String query = "select * from booking";
+            try
+            {
+                preparedStatement = connection.prepareStatement(query);
+                resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) // if there's a hit
+                {
+                    java.util.Date strDate = resultSet.getDate("date");
+                    int hour = resultSet.getInt("hour");
+                    int duration = resultSet.getInt("duration");
+                    int bookingID = resultSet.getInt("id");
+                    int seatID = resultSet.getInt("seatid");
+                    int userID = resultSet.getInt("userid");
+
+                    fileWriter.write(bookingID+","+strDate+","+hour+","+duration+","+seatID+","+userID+"\n");
+                }
+            }
+            catch (Exception e)
+            {
+            }
+            finally
+            {
+                preparedStatement.close();
+                resultSet.close();
+            }
+
+            fileWriter.close();
+            System.out.println("Export file written.");
+        }
+        catch (IOException | SQLException e)
+        {
+            System.out.println("File writing error.");
+            e.printStackTrace();
+        }
     }
 
 }
