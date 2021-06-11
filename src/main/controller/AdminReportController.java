@@ -279,5 +279,11 @@ public class AdminReportController
         pstmt.executeUpdate();
     }
 
+    // Export all bookings to a CSV file.
+    public void Export()
+    {
+        System.out.println("EXPORT");
+    }
+
 }
 
