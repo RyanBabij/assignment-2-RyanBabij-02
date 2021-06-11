@@ -338,8 +338,9 @@ public class WorkerBookController
             {
                 int sid = resultSet.getInt("sid");
                 String seatName = resultSet.getString("seatName");
+                boolean seatActive = resultSet.getBoolean("active");
 
-                if (vUnavailableSeats.contains(sid) == false)
+                if (vUnavailableSeats.contains(sid) == false && seatActive)
                 {
                     vSeatName.add(seatName);
                 }
